@@ -8,7 +8,6 @@
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	
 }
@@ -17,9 +16,6 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
                                                 const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	FGameplayTagContainer TagContainer;
-	EffectSpec.GetAllAssetTags(TagContainer);
-	
+	EffectSpec.GetAllAssetTags(TagContainer);	
 	EffectAssetTags.Broadcast(TagContainer);
-
-	
 }

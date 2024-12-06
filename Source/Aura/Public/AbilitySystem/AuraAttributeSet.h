@@ -8,6 +8,14 @@
 #include "GameplayEffectExtension.h"
 #include "AuraAttributeSet.generated.h"
 
+
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -38,11 +46,9 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
-#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+//typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+template<class T>
+using  TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 /**
  * 
  */
@@ -57,6 +63,8 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual  void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
+	TMap<FGameplayTag,TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+	TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FunctionPointer;
 	/*
 	 * Primary Attributes
 	 */
