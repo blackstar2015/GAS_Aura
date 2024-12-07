@@ -17,6 +17,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Increases Armor and Armor penetration"));
 	GameplayTags.Attributes_Primary_Vigour = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Primary.Vigour"),
 		FString("Increases Health"));
+
 	//Secondary attributes
 	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.Armor"),
 		FString("Reduces Damage Taken, Improves block chance"));
@@ -38,4 +39,18 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Max health obtainable"));
 	GameplayTags.Attributes_Secondary_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.MaxMana"),
 		FString("Max Mana obtainable"));
+
+	//Input Tags
+	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.LMB"),
+		FString("Left Mouse Button"));
+	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.RMB"),
+		FString("Right Mouse Button"));
+	GameplayTags.InputTag_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.1"),
+		FString("Number 1"));
+	GameplayTags.InputTag_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.2"),
+		FString("Number 2"));
+	GameplayTags.InputTag_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.3"),
+		FString("Number 3"));
+	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.4"),
+		FString("Number 4"));
 }
