@@ -35,12 +35,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidge
  * 
  */
 UCLASS(BlueprintType, Blueprintable)
-class AURA_API UOverlayWidgetController : public UAuraWidgetController
+class AURA_API UOverlayWidgetController : public UAuraWidgetController 
 {
 	GENERATED_BODY()
 public:
 	virtual void BroadCastInitialValues() override;
-	virtual void BindCallbacksToDependencies() override;
+	virtual void BindCallbacksToDependencies() override; 
 	
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnHealthChanged;
