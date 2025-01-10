@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "EntitySystem/MovieSceneEntitySystemRunner.h"
 #include "Interaction/CombatInterface.h"
@@ -33,14 +35,19 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
 
-		//TODO: Set projectile rotation
 		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform,
 			GetOwningActorFromActorInfo(),Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		//TODO: Give the projectile a Gameplay Effect Spec for causing damage
+		const UAbilitySystemComponent* SourceAsc = UAbilitySystemBlueprintLibrary::
+		GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		
+		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,
+			GetAbilityLevel(),SourceAsc->MakeEffectContext());
+
+		Projectile->DamageEffectSpecHandle = SpecHandle;
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}	
