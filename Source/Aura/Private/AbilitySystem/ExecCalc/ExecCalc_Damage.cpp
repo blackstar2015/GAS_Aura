@@ -118,7 +118,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float SourceCritChance = 0.f;
 	float SourceCritDamage = 0.f;
 	float TargetCritResistance = 0.f;
-
+	float RandCritChance = 0.f;
+	
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CritChanceDef,EvaluationParameters,SourceCritChance);
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CritDamageDef,EvaluationParameters,SourceCritDamage);
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CritResistanceDef,EvaluationParameters,TargetCritResistance);
@@ -129,9 +130,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	const FRealCurve* CritResistanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritResistance"),FString());
 	const float CritResistanceCoefficient = CritResistanceCurve->Eval(TargetCombatInterface->GetPlayerLevel());
-
+	const FRealCurve* CritChanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritChance"),FString());
+	const float CritChanceCoefficient = CritChanceCurve->Eval(SourceCombatInterface->GetPlayerLevel());
 	//Check if Crit and calculate damage accordingly
-	const bool bIsCrit = FMath::RandRange(1.f, 100.f) < (SourceCritChance - (TargetCritResistance * CritResistanceCoefficient));
+	RandCritChance = FMath::RandRange(1.f, 100.f);
+	const bool bIsCrit = RandCritChance < ((SourceCritChance * CritChanceCoefficient) - (TargetCritResistance * CritResistanceCoefficient));
 	Damage = bIsCrit ? (Damage*2 + SourceCritDamage) : Damage;
 #pragma endregion
 
