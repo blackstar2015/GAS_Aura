@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
@@ -25,10 +26,10 @@ class AURA_API AAuraPlayerController : public APlayerController
 
 public:
 	AAuraPlayerController();
-	virtual void PlayerTick(float DeltaTime) override; 
+	virtual void PlayerTick(float DeltaTime) override;	
 	UFUNCTION(Client,Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
-	
+	void ShowDamageNumber(float Damage, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

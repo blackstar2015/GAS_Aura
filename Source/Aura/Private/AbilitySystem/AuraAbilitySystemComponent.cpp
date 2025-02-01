@@ -31,7 +31,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 {
 	if(!InputTag.IsValid()) return;
 
-	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities()) 
 	{
 		 
 		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))

@@ -16,7 +16,7 @@ public:
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit;}
 	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit;}
 	
-	virtual UScriptStruct* GetScriptStruct() const override
+	virtual UScriptStruct* GetScriptStruct() const 
 	{
 		return StaticStruct();
 	}
@@ -34,7 +34,7 @@ public:
 		return NewContext;
 	}
 	
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
 			
 protected:
 	UPROPERTY()
@@ -44,7 +44,7 @@ protected:
 };
 
 template<>
-struct TStructOpsType<FAuraGameplayEffectContext> : public TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext>
+struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext>
 {
 	enum
 	{

@@ -5,6 +5,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
@@ -60,6 +61,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
 	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();	
@@ -67,9 +69,16 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 	
+	
+	
 #pragma region Damage
 	//Get Damage set by caller magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	float Damage = 0.f;
+	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key);
+		Damage += DamageTypeValue;
+	}
 	float RandDamageMultiplier = FMath::RandRange(-1.0f, 1.0f);
 	Damage = Damage - RandDamageMultiplier; 
 # pragma endregion
@@ -86,6 +95,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	//if blocked half the damage
 	const bool bBlocked = FMath::RandRange(1.f, 100.f) < TargetBlockChance;
+	UAuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle,bBlocked);
 	Damage = bBlocked? Damage/2 : Damage;
 #pragma endregion
 
@@ -132,9 +142,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const float CritResistanceCoefficient = CritResistanceCurve->Eval(TargetCombatInterface->GetPlayerLevel());
 	const FRealCurve* CritChanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritChance"),FString());
 	const float CritChanceCoefficient = CritChanceCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	
 	//Check if Crit and calculate damage accordingly
 	RandCritChance = FMath::RandRange(1.f, 100.f);
 	const bool bIsCrit = RandCritChance < ((SourceCritChance * CritChanceCoefficient) - (TargetCritResistance * CritResistanceCoefficient));
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle,bIsCrit);
 	Damage = bIsCrit ? (Damage*2 + SourceCritDamage) : Damage;
 #pragma endregion
 
