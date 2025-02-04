@@ -10,7 +10,6 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
-#include "Chaos/PBDSuspensionConstraintData.h"
 #include "Interaction/CombatInterface.h"
 
 struct AuraDamageStatics
