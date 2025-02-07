@@ -58,6 +58,9 @@ struct FAuraGameplayTags
 	FGameplayTag Damage_Ice;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
+
+	//Abilities
+	FGameplayTag Abilities_Attack;
 	
 	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances;
 	
