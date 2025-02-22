@@ -80,6 +80,6 @@ void AAuraProjectile::OnSphereOverlapped(UPrimitiveComponent* OverlappedComponen
 	}
 	else
 	{
-		bHit = true;	
+		bHit = true;
 	}
 }
