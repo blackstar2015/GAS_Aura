@@ -100,7 +100,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 #pragma region Abilities
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Attack"),
-			FString("Attack Ability Tag"));	
+			FString("Attack Ability Tag"));
+	GameplayTags.Abilities_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Summon"),
+			FString("Summon Ability Tag"));	
 #pragma endregion
 
 #pragma region Combat Sockets
@@ -109,7 +111,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.CombatSocket_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.LeftHand"),
 			FString("LeftHand Montage Tag"));
 	GameplayTags.CombatSocket_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.RightHand"),
-			FString("RightHand Montage Tag"));	
+			FString("RightHand Montage Tag"));
+	GameplayTags.CombatSocket_Tail = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Tail"),
+			FString("Tail Montage Tag"));
 #pragma endregion
 
 #pragma region Attack Montage Tags

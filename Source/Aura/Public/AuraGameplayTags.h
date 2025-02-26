@@ -61,11 +61,13 @@ struct FAuraGameplayTags
 
 	//Abilities
 	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Summon;
 
 	//Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;
 	FGameplayTag CombatSocket_LeftHand;
+	FGameplayTag CombatSocket_Tail;
 
 	//Attack Montage tags
 	FGameplayTag Montage_Attack_1;
