@@ -25,19 +25,19 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn=true))
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+	TObjectPtr<USphereComponent> Sphere;
+	
 	UFUNCTION()
 	void OnSphereOverlapped(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	
-
 private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
-
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
 	UPROPERTY(EditAnywhere)
@@ -45,8 +45,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> LoopingSound;
 	UPROPERTY()
-	TObjectPtr<UAudioComponent> LoopingSoundComponent;
-	
+	TObjectPtr<UAudioComponent> LoopingSoundComponent;	
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 15.f;
 
