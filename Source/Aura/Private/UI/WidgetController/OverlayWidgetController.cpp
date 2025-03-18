@@ -5,7 +5,6 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
-#include "Fonts/UnicodeBlockRange.h"
 
 void UOverlayWidgetController::BroadCastInitialValues()
 {
@@ -57,21 +56,42 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 
 	);
-	
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda
-	(
-		[this](const FGameplayTagContainer& AssetTags)
-		{
-			for(const FGameplayTag& Tag : AssetTags)
-			{
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
 
-				if(Tag.MatchesTag(MessageTag))
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven)
+		{
+			OnInitializeStartUpAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartUpAbilities);			
+		}
+		
+		AuraASC->EffectAssetTags.AddLambda
+		(
+			[this](const FGameplayTagContainer& AssetTags)
+			{
+				for(const FGameplayTag& Tag : AssetTags)
 				{
-					FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+
+					if(Tag.MatchesTag(MessageTag))
+					{
+						FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
 				}
 			}
-		}
-	);
+		);		
+	}
 }
+
+void UOverlayWidgetController::OnInitializeStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
+{
+	//TODO Get information about all given abilities. Look up their ability info and broadcast its widgets
+	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
+
+	
+}
+
