@@ -108,6 +108,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	
 #pragma endregion
 
+#pragma region Cooldowns
+	GameplayTags.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Fire.FireBolt"),
+				FString("FireBolt Cooldown Tag"));
+#pragma endregion
+
 #pragma region Combat Sockets
 	GameplayTags.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Weapon"),
 			FString("Weapon Montage Tag"));

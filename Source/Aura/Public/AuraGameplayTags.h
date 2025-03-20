@@ -63,6 +63,10 @@ struct FAuraGameplayTags
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Fire_FireBolt;
+
+	//Cooldown Tags
+	FGameplayTag Cooldown_Fire_FireBolt;
+	
 	//Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;
@@ -75,6 +79,7 @@ struct FAuraGameplayTags
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
 
+	
 	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances;
 	
 	//Effects
