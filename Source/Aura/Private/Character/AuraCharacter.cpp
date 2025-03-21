@@ -22,7 +22,7 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	
+	CharacterClass = ECharacterClass::Sorcerer;
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)

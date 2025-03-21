@@ -39,6 +39,7 @@ public:
 	TArray<FTaggedMontage> AttackMontages;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -64,7 +65,8 @@ protected:
 	
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect>  DefaultPrimaryAttributes;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
