@@ -19,13 +19,14 @@ UAuraAttributeSet::UAuraAttributeSet()
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
-	//Primary Attributes
+#pragma region Primary Attributes
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,GetStrengthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,GetIntelligenceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Resilience,GetResilienceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Vigour,GetVigourAttribute);
+#pragma endregion
 
-	//Secondary Attributes
+#pragma region Secondary Attributes
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Armor,GetArmorAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_ArmorPenetration,GetArmorPenetrationAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_BlockChance,GetBlockChanceAttribute);
@@ -36,25 +37,28 @@ UAuraAttributeSet::UAuraAttributeSet()
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_ManaRegen,GetManaRegenAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,GetMaxHealthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,GetMaxManaAttribute);
-
-	//Resistance Attributes
+#pragma endregion
+	
+#pragma region  Resistance Attributes
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Fire,GetFireResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Lightning,GetLightningResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Ice,GetIceResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Arcane,GetArcaneResistanceAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Resistance_Physical,GetPhysicalResistanceAttribute);
+#pragma endregion
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	//Primary Attributes
+#pragma region Primary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Strength,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Intelligence,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Resilience,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Vigour,COND_None,REPNOTIFY_Always);
-
-	//Secondary Attributes
+#pragma endregion
+	
+#pragma region  Secondary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Armor,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,ArmorPenetration,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,BlockChance,COND_None,REPNOTIFY_Always);
@@ -65,17 +69,20 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,ManaRegen,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,MaxHealth,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
+#pragma endregion
 
-	//Resistance Attributes
+#pragma region Resistance Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,FireResistance,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,LightningResistance,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,IceResistance,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,ArcaneResistance,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,PhysicalResistance,COND_None,REPNOTIFY_Always);
-	
-	//Vital Attributes
+#pragma endregion	
+
+#pragma region Vital Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Health,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet,Mana,COND_None,REPNOTIFY_Always);
+#pragma endregion
 }
 
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -147,8 +154,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		{
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
-			GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,FString::Printf(TEXT("Health: %f"),GetHealth()));
-
+			
 			const bool bFatal = NewHealth <= 0.f;
 			if (bFatal)
 			{
@@ -157,6 +163,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				{
 					CombatInterface->Die();
 				}
+				SendXPEvent(Props);
 			}
 			else
 			{
@@ -174,9 +181,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if(Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
 	{
 		const float LocalIncomingXP = GetIncomingXP();
-		SetIncomingXP(0);
-		UE_LOG(LogAura, Log, TEXT("Incoming XP: %f"), LocalIncomingXP)
-		//SetIncomingXP(0);
+		SetIncomingXP(0.f);
+		UE_LOG(LogAura, Log, TEXT("Incoming XP: %f"), LocalIncomingXP);
 	}
 }
 
@@ -193,6 +199,23 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties Props, float Da
 		{
 			PlayerController->ShowDamageNumber(Damage, Props.TargetCharacter,bBlockedHit,bCriticalHit);
 		}
+	}
+}
+
+void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props) const
+{
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		const int32 TargetLevel = CombatInterface->GetPlayerLevel();
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 XPReward = UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+ 
+		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTags.Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 	}
 }
 

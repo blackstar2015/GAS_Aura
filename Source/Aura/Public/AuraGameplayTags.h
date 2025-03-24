@@ -18,13 +18,16 @@ struct FAuraGameplayTags
 	static const FAuraGameplayTags& Get() {return GameplayTags;}
 	static void InitializeNativeGameplayTags();
 
-	//Primary Tags
+	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances;
+	
+#pragma region Primary Tags
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
 	FGameplayTag Attributes_Primary_Resilience;
 	FGameplayTag Attributes_Primary_Vigour;
+#pragma endregion
 
-	//Secondary Tags
+#pragma region Secondary Tags
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_ArmorPenetration;
 	FGameplayTag Attributes_Secondary_BlockChance;
@@ -35,55 +38,67 @@ struct FAuraGameplayTags
 	FGameplayTag Attributes_Secondary_ManaRegen;
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
+#pragma endregion
+	
+#pragma region Meta Attribute Tags
+	FGameplayTag Attributes_Meta_IncomingXP;
+#pragma endregion
 
-	//Resistances
+#pragma region Resistances
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Ice;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
-
-	//Input Tags
+#pragma endregion
+	
+#pragma region Input Tags
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
-
-	//Damage
+#pragma endregion
+	
+#pragma region Damage Tags
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Ice;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
-
-	//Abilities
+#pragma endregion
+	
+#pragma region Abilities Tags
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Fire_FireBolt;
-
-	//Cooldown Tags
-	FGameplayTag Cooldown_Fire_FireBolt;
+#pragma endregion
 	
-	//Combat Socket Tags
+#pragma region Cooldown Tags
+	FGameplayTag Cooldown_Fire_FireBolt;
+#pragma endregion
+
+	
+#pragma region Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;
 	FGameplayTag CombatSocket_LeftHand;
 	FGameplayTag CombatSocket_Tail;
-
-	//Attack Montage tags
+#pragma endregion
+	
+#pragma region Attack Montage tags
 	FGameplayTag Montage_Attack_1;
 	FGameplayTag Montage_Attack_2;
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
+#pragma endregion
 
-	
-	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances;
-	
-	//Effects
+#pragma region Effect Tags
 	FGameplayTag Effects_HitReact;
+#pragma endregion
+	
 private:
 	static FAuraGameplayTags GameplayTags;
 		
