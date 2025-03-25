@@ -7,6 +7,9 @@
 #include "Interaction/PlayerInterface.h"
 #include "AuraCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UNiagaraComponent;
 /**
  * 
  */
@@ -34,7 +37,19 @@ public:
 	virtual int32 GetAttributePointsReward_Implementation(int32 Level) const override;
 	virtual int32 GetSpellPointsReward_Implementation(int32 Level) const override;
 #pragma endregion
-	
-protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+private:
 	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> TopDownCameraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> CameraBoom;
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
+
+	
 };
