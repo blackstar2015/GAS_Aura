@@ -71,13 +71,13 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationDef);
 	RelevantAttributesToCapture.Add(DamageStatics().BlockChanceDef);
 	RelevantAttributesToCapture.Add(DamageStatics().CritChanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().CritDamageDef); 
-	RelevantAttributesToCapture.Add(DamageStatics().CritResistanceDef);    
-	RelevantAttributesToCapture.Add(DamageStatics().FireResistanceDef);    
-	RelevantAttributesToCapture.Add(DamageStatics().LightningResistanceDef);    
-	RelevantAttributesToCapture.Add(DamageStatics().IceResistanceDef);    
-	RelevantAttributesToCapture.Add(DamageStatics().ArcaneResistanceDef);    
-	RelevantAttributesToCapture.Add(DamageStatics().PhysicalResistanceDef);    
+	RelevantAttributesToCapture.Add(DamageStatics().CritDamageDef);
+	RelevantAttributesToCapture.Add(DamageStatics().CritResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().FireResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().LightningResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().IceResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().ArcaneResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().PhysicalResistanceDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
@@ -89,9 +89,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	AActor* SourceAvatar =SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	AActor* TargetAvatar =TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 
-	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
-	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
-	
+	int32 SourcePlayerLevel = 1;
+	if (SourceAvatar->Implements<UCombatInterface>())
+	{
+		SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
+	}
+	int32 TargetPlayerLevel = 1;
+	if (TargetAvatar->Implements<UCombatInterface>())
+	{
+		TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
+	}
+
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 
@@ -136,7 +144,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 	const FRealCurve* BlockChanceCurve = CharacterClassInfo->
 				DamageCalculationCoefficients->FindCurve(FName("BlockChance"),FString());
-	const float BlockChanceCoefficient = BlockChanceCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+	const float BlockChanceCoefficient = BlockChanceCurve->Eval(TargetPlayerLevel);
 	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.f) * BlockChanceCoefficient;
 
 	//if blocked half the damage
@@ -159,13 +167,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	//armor penetration ignores a percentage of the targets armor
 	const FRealCurve* ArmorPenetrationCurve = CharacterClassInfo->
 				DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"),FString());
-	const float ArmorPenetrationCoefficient = ArmorPenetrationCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float ArmorPenetrationCoefficient = ArmorPenetrationCurve->Eval(SourcePlayerLevel);
 	const float EffectiveArmor = TargetArmor * (100-SourceArmorPenetration * ArmorPenetrationCoefficient)/100.f;
 
 	
 	//Armor ignores a percentage of the incoming damage
 	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve("EffectiveArmor",FString());
-	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetPlayerLevel);
 	Damage *= (100-EffectiveArmor  * EffectiveArmorCoefficient )/100.f;
 #pragma endregion
 
@@ -185,9 +193,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	TargetCritResistance = FMath::Max<float>(TargetCritResistance, 0.f);
 	
 	const FRealCurve* CritResistanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritResistance"),FString());
-	const float CritResistanceCoefficient = CritResistanceCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+	const float CritResistanceCoefficient = CritResistanceCurve->Eval(TargetPlayerLevel);
 	const FRealCurve* CritChanceCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritChance"),FString());
-	const float CritChanceCoefficient = CritChanceCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float CritChanceCoefficient = CritChanceCurve->Eval(SourcePlayerLevel);
 	
 	//Check if Crit and calculate damage accordingly
 	RandCritChance = FMath::RandRange(1.f, 100.f);
