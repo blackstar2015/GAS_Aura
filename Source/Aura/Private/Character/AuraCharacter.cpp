@@ -46,6 +46,13 @@ int32 AAuraCharacter::GetPlayerLevel()
 	
 }
 
+void AAuraCharacter::AddToXP_Implementation(int32 InXP)
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->AddToXP(InXP);
+}
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	//Init Ability Actor info for the server
