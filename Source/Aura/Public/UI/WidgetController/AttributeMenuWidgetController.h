@@ -9,7 +9,9 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
+class UAttributeInfo;
 struct FAuraAttributeInfo;
+struct FGameplayTag;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
 
 
@@ -33,6 +35,9 @@ public:
 	FOnPlayerStatChangeSignature AttributePointsChangeDelegate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnPlayerStatChangeSignature SpellPointsChangeDelegate;
+
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
