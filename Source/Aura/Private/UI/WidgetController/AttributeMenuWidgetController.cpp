@@ -15,6 +15,9 @@ void UAttributeMenuWidgetController::BroadCastInitialValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState); 
+	AttributePointsChangeDelegate.Broadcast(AuraPlayerState->GetAttributePoints());
+	SpellPointsChangeDelegate.Broadcast(AuraPlayerState->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -25,7 +28,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	for (auto& Pair : AS->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
-[this,Pair](const FOnAttributeChangeData& Data)
+		[this,Pair](const FOnAttributeChangeData& Data)
 		{
 			BroadcastAttributeInfo(Pair.Key, Pair.Value());
 		}
@@ -34,11 +37,17 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState); 
 	AuraPlayerState->OnAttributePointChangedDelegate.AddLambda(
-		[this](int32 Points)
+		[this](int32 AttributePoints)
 		{
-			AttributePointsChangeDelegate.Broadcast(Points);
-		});
-
+			AttributePointsChangeDelegate.Broadcast(AttributePoints);
+		}
+	);
+	AuraPlayerState->OnAttributePointChangedDelegate.AddLambda(
+		[this](int32 SpellPoints)
+		{
+			SpellPointsChangeDelegate.Broadcast(SpellPoints);
+		}
+	);
 	
 }
 

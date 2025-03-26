@@ -31,6 +31,8 @@ public:
 	FAttributeInfoSignature AttributeInfoDelegate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnPlayerStatChangeSignature AttributePointsChangeDelegate;
+	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnPlayerStatChangeSignature SpellPointsChangeDelegate;
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
