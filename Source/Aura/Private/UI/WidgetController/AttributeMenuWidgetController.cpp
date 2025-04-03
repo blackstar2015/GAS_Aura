@@ -49,7 +49,6 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			SpellPointsChangeDelegate.Broadcast(SpellPoints);
 		}
 	);
-	
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
