@@ -60,6 +60,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Number 3"));
 	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.4"),
 		FString("Number 4"));
+	GameplayTags.InputTag_Passive_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.Passive.1"),
+		FString("Passive 1"));
+	GameplayTags.InputTag_Passive_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTags.Passive.2"),
+		FString("Passive 2"));
 #pragma endregion
 	
 #pragma region DamageTypes

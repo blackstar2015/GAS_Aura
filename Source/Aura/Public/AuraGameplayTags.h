@@ -59,6 +59,8 @@ struct FAuraGameplayTags
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
+	FGameplayTag InputTag_Passive_1;
+	FGameplayTag InputTag_Passive_2;
 #pragma endregion
 	
 #pragma region Damage Tags
