@@ -6,8 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
-DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, UAuraAbilitySystemComponent*);
 DECLARE_DELEGATE_OneParam(FForEachAbility,const FGameplayAbilitySpec&);
 /**
  * 
@@ -45,14 +45,3 @@ protected:
 	virtual void OnRep_ActivateAbilities() override;
 	
 };
-
-inline void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
-{
-	Super::OnRep_ActivateAbilities();
-
-	if (!bStartupAbilitiesGiven)
-	{
-		bStartupAbilitiesGiven = true;
-		AbilitiesGivenDelegate.Broadcast(this);
-	}		
-}

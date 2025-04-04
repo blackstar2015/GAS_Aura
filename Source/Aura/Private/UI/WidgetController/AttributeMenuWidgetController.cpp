@@ -7,26 +7,11 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Player/AuraPlayerState.h"
 
-void UAttributeMenuWidgetController::BroadCastInitialValues()
-{
-	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-	check(AttributeInfo)
-
-	for (auto& Pair : AS->TagsToAttributes)
-	{
-		BroadcastAttributeInfo(Pair.Key, Pair.Value());
-	}
-	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState); 
-	AttributePointsChangeDelegate.Broadcast(AuraPlayerState->GetAttributePoints());
-	SpellPointsChangeDelegate.Broadcast(AuraPlayerState->GetSpellPoints());
-}
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-	check(AttributeInfo)
-	
-	for (auto& Pair : AS->TagsToAttributes)
+	check(AttributeInfo)	
+	for (auto& Pair : GetAuraAttributeSet()->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
 		[this,Pair](const FOnAttributeChangeData& Data)
@@ -36,19 +21,30 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	);
 	}
 
-	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState); 
-	AuraPlayerState->OnAttributePointChangedDelegate.AddLambda(
+	GetAuraPlayerState()->OnAttributePointChangedDelegate.AddLambda(
 		[this](int32 AttributePoints)
 		{
 			AttributePointsChangeDelegate.Broadcast(AttributePoints);
 		}
 	);
-	AuraPlayerState->OnAttributePointChangedDelegate.AddLambda(
+	GetAuraPlayerState()->OnAttributePointChangedDelegate.AddLambda(
 		[this](int32 SpellPoints)
 		{
 			SpellPointsChangeDelegate.Broadcast(SpellPoints);
 		}
 	);
+}
+
+void UAttributeMenuWidgetController::BroadCastInitialValues()
+{
+	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
+	check(AttributeInfo)
+	for (auto& Pair : GetAuraAttributeSet()->TagsToAttributes)
+	{
+		BroadcastAttributeInfo(Pair.Key, Pair.Value());
+	}
+	AttributePointsChangeDelegate.Broadcast(GetAuraPlayerState()->GetAttributePoints());
+	SpellPointsChangeDelegate.Broadcast(GetAuraPlayerState()->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
