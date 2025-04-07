@@ -112,11 +112,35 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 			FString("Attack Ability Tag"));
 	GameplayTags.Abilities_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Summon"),
 			FString("Summon Ability Tag"));
+	
+	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.HitReact"),
+			FString("HitReact Ability Tag"));
+	
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Fire.FireBolt"),
 			FString("FireBolt Ability Tag"));
 	
 #pragma endregion
 
+#pragma region Ability Status
+	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+			FString("Locked Ability Status Tag"));
+	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Eligible"),
+			FString("Eligible Ability Status Tag"));
+	GameplayTags.Abilities_Status_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Unlocked"),
+			FString("Unlocked Ability Status Tag"));
+	GameplayTags.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Equipped"),
+			FString("Equipped Ability Status Tag"));
+#pragma endregion
+
+#pragma region Ability Types
+	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+			FString("Offensive Ability Type Tag"));
+	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+			FString("Passive Ability Type Tag"));
+	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+			FString("No Ability Type Tag"));
+#pragma endregion
+	
 #pragma region Cooldowns
 	GameplayTags.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Fire.FireBolt"),
 				FString("FireBolt Cooldown Tag"));
@@ -143,4 +167,5 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Montage_Attack_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Montage.Attack.4"),
 			FString("Weapon Montage Tag 4"));
 #pragma endregion
+
 }
