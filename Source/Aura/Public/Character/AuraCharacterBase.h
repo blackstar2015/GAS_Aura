@@ -7,12 +7,13 @@
 #include "NiagaraSystem.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystemComponent.h"
 #include "AuraCharacterBase.generated.h"
 
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
-class UAbilitySystemComponent;
+//class UAbilitySystemComponent;
 class UAnimMontage;
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface

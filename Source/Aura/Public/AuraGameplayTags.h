@@ -76,11 +76,17 @@ struct FAuraGameplayTags
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	
-	FGameplayTag Abilities_HitReact;
+	FGameplayTag Abilities_HitReact;	
+#pragma endregion
 	
+#pragma region Fire Abilities Tags		
 	FGameplayTag Abilities_Fire_FireBolt;
 #pragma endregion
 
+#pragma region Lightning Abilities Tags		
+	FGameplayTag Abilities_Lightning_Electrocute;
+#pragma endregion
+	
 #pragma region Ability Status Tags
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;
@@ -96,6 +102,7 @@ struct FAuraGameplayTags
 	
 #pragma region Cooldown Tags
 	FGameplayTag Cooldown_Fire_FireBolt;
+	FGameplayTag Cooldown_Lightning_Electrocute;
 #pragma endregion
 
 	
