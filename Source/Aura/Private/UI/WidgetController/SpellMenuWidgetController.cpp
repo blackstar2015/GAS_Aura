@@ -24,7 +24,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			AbilityInfoDelegate.Broadcast(Info);
 		}
 	});
-	GetAuraPlayerState()->OnAttributePointChangedDelegate.AddLambda(
+	GetAuraPlayerState()->OnSpellPointChangedDelegate.AddLambda(
 		[this](int32 SpellPoints)
 		{
 			SpellPointsChangeDelegate.Broadcast(SpellPoints);
