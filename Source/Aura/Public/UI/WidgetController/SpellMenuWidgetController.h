@@ -6,7 +6,6 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "SpellMenuWidgetController.generated.h"
 
-class UAttributeInfo;
 /**
  * 
  */
@@ -21,7 +20,4 @@ public:
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnPlayerStatChangeSignature SpellPointsChangeDelegate;
 
-protected:
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UAttributeInfo> AttributeInfo;
 };

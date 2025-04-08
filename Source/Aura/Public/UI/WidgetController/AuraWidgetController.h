@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AuraWidgetController.generated.h"
 
+class UAttributeInfo;
 class UAuraAttributeSet;
 class UAuraAbilitySystemComponent;
 class AAuraPlayerState;
@@ -84,6 +85,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeInfo;
+	
 	AAuraPlayerController* GetAuraPlayerController();
 	AAuraPlayerState* GetAuraPlayerState();
 	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
