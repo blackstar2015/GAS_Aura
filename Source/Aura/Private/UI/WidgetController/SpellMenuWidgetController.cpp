@@ -31,3 +31,18 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		}
 	);
 }
+//
+// FGameplayTag USpellMenuWidgetController::GetAbilityStatus()
+// {
+// 	GetAuraAbilitySystemComponent()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+// 	{
+// 		if (AbilityInfo)
+// 		{
+// 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+// 			Info.StatusTag = StatusTag;
+// 			return StatusTag;
+// 		}
+// 		return FGameplayTag();
+// 	});
+// 	return FGameplayTag();
+// }
