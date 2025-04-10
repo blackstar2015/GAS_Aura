@@ -73,6 +73,8 @@ struct FAuraGameplayTags
 #pragma endregion
 	
 #pragma region Abilities Tags
+	FGameplayTag Abilities_None;
+	
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	
@@ -104,7 +106,6 @@ struct FAuraGameplayTags
 	FGameplayTag Cooldown_Fire_FireBolt;
 	FGameplayTag Cooldown_Lightning_Electrocute;
 #pragma endregion
-
 	
 #pragma region Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;
