@@ -17,7 +17,7 @@ void USpellMenuWidgetController::BroadCastInitialValues()
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	
-	GetAuraAbilitySystemComponent()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetAuraAbilitySystemComponent()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel)
 	{
 		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 		{
@@ -77,8 +77,14 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	FSpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints,bEnableEquip);
 }
 
+void USpellMenuWidgetController::SpendPointButtonPressed()
+{
+	if (GetAuraAbilitySystemComponent())
+		GetAuraAbilitySystemComponent()->ServerSpendSpellPoint(SelectedAbility.Ability);
+}
+
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int SpellPoints,
-	bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton)
+                                                     bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton)
 {
 	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
 	bShouldEnableSpendPointsButton = false;			
@@ -108,9 +114,4 @@ void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& Ability
 			bShouldEnableSpendPointsButton = true;			
 		}
 	}
-	// else if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Locked))
-	// {
-	// 	bShouldEnableEquipButton = false;
-	// 	bShouldEnableSpendPointsButton = false;
-	// }
 }

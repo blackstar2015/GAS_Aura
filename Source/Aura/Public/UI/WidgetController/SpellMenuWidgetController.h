@@ -29,6 +29,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
+
+	UFUNCTION(BlueprintCallable)
+	void SpendPointButtonPressed();
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Delegates")
 	FOnPlayerStatChangeSignature SpellPointsChangeDelegate;
@@ -37,8 +40,9 @@ public:
 	FSpellGlobeSelectedSignature FSpellGlobeSelectedDelegate;
 
 private:
-
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int SpellPoints, bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton );
+	
 	FSelectedAbility SelectedAbility = {FAuraGameplayTags::Get().Abilities_None, FAuraGameplayTags::Get().Abilities_Status_Locked};
+
 	int32 CurrentSpellPoints = 0;
 };
