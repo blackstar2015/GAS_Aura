@@ -80,7 +80,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 void USpellMenuWidgetController::SpendPointButtonPressed()
 {
 	if (GetAuraAbilitySystemComponent())
-		GetAuraAbilitySystemComponent()->ServerSpendSpellPoint(SelectedAbility.Ability);
+		GetAuraAbilitySystemComponent()->ServerSpendSpellPoint(SelectedAbility.Ability); 
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int SpellPoints,

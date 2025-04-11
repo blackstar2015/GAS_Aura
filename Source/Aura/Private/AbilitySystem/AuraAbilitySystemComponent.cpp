@@ -200,6 +200,7 @@ void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGa
 		{
 			AbilitySpec->GetDynamicSpecSourceTags().RemoveTag(GameplayTags.Abilities_Status_Eligible);
 			AbilitySpec->GetDynamicSpecSourceTags().AddTag(GameplayTags.Abilities_Status_Unlocked);
+			Status = GameplayTags.Abilities_Status_Unlocked;
 		}
 		else if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) ||
 			Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
@@ -208,8 +209,7 @@ void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGa
 		}
 		ClientUpdateAbilityStatus(AbilityTag, Status, AbilitySpec->Level);
 		MarkAbilitySpecDirty(*AbilitySpec);
-	}
-	
+	}	
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
@@ -233,6 +233,6 @@ void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySys
                                                                      const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	FGameplayTagContainer TagContainer;
-	EffectSpec.GetAllAssetTags(TagContainer);	
+	EffectSpec.GetAllAssetTags(TagContainer);
 	EffectAssetTags.Broadcast(TagContainer);
 }
