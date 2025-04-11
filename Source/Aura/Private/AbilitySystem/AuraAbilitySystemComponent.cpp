@@ -205,7 +205,7 @@ void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGa
 		else if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) ||
 			Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
 		{
-			AbilitySpec->Level++;
+			AbilitySpec->Level += 1;
 		}
 		ClientUpdateAbilityStatus(AbilityTag, Status, AbilitySpec->Level);
 		MarkAbilitySpecDirty(*AbilitySpec);
@@ -226,7 +226,7 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(
 	const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel)
 {
-	AbilityStatusChangedDelegate.Broadcast(AbilityTag, StatusTag, AbilityLevel);
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag, AbilityLevel);
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,

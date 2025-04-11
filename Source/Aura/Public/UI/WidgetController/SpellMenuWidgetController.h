@@ -34,10 +34,10 @@ public:
 	void SpendPointButtonPressed();
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Delegates")
-	FOnPlayerStatChangeSignature SpellPointsChangeDelegate;
+	FOnPlayerStatChangeSignature SpellPointsChanged;
 
 	UPROPERTY(BlueprintAssignable,Category="GAS|Delegates")
-	FSpellGlobeSelectedSignature FSpellGlobeSelectedDelegate;
+	FSpellGlobeSelectedSignature SpellGlobeSelectedDelegate;
 
 private:
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int SpellPoints, bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton );

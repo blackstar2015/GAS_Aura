@@ -23,7 +23,7 @@ public:
 	
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven AbilitiesGivenDelegate;
-	FAbilityStatusChanged AbilityStatusChangedDelegate;
+	FAbilityStatusChanged AbilityStatusChanged;
 	
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
