@@ -142,11 +142,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 #pragma endregion
 
 #pragma region Ability Types
-	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.Offensive"),
 			FString("Offensive Ability Type Tag"));
-	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.Passive"),
 			FString("Passive Ability Type Tag"));
-	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.Locked"),
+	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.None"),
 			FString("No Ability Type Tag"));
 #pragma endregion
 	
