@@ -77,16 +77,19 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 		{
 			//Determine if there was a successful debuff
 			const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Chance, false, -1.f);
-
 			float TargetDebuffResistance = 0.f;
 			const FGameplayTag& ResistanceTag = GameplayTags.DamageTypesToResistances[DamageType];
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(InTagsToDefs[ResistanceTag], EvaluationParameters, TargetDebuffResistance);
 			TargetDebuffResistance = FMath::Max(TargetDebuffResistance, 0.f);
 			const float EffectiveDebuffChance = SourceDebuffChance * (100.f - TargetDebuffResistance)/100.f;
-			const bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
+			bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
 			if(bDebuff)
-			{
-				
+			{				
+				FDamageEffectParams EffectParams;
+				EffectParams.DamageType = DebuffType;
+				EffectParams.BaseDamage = TypeDamage;
+				EffectParams.DebuffDuration = DebuffDuration;
+				EffectParams.DebuffFrequency = DebuffFrequency;
 			}
 		}
 	}
