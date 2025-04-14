@@ -84,12 +84,8 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 			const float EffectiveDebuffChance = SourceDebuffChance * (100.f - TargetDebuffResistance)/100.f;
 			bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
 			if(bDebuff)
-			{				
-				FDamageEffectParams EffectParams;
-				EffectParams.DamageType = DebuffType;
-				EffectParams.BaseDamage = TypeDamage;
-				EffectParams.DebuffDuration = DebuffDuration;
-				EffectParams.DebuffFrequency = DebuffFrequency;
+			{
+				
 			}
 		}
 	}
