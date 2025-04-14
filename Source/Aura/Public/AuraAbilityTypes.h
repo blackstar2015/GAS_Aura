@@ -56,19 +56,19 @@ public:
 	bool IsBlockedHit() const {return bIsBlockedHit;}
 	bool IsSuccessfulDebuff() const {return bIsSuccessfulDebuff;}
 	
-	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit;}
-	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit;}
-	void SetIsSuccessfulDebuff(bool bInIsSuccessfulDebuff) {bIsSuccessfulDebuff = bInIsSuccessfulDebuff;}
+	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit;}
+	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit;}
+	void SetIsSuccessfulDebuff(const bool bInIsSuccessfulDebuff) {bIsSuccessfulDebuff = bInIsSuccessfulDebuff;}
 
 	float GetDebuffDamage() const {return DebuffDamage;}
 	float GetDebuffDuration() const {return DebuffDuration;}
 	float GetDebuffFrequency() const {return DebuffFrequency;}
-	TSharedPtr<FGameplayTag> GetDamageType() const {return DebuffType;}
+	TSharedPtr<FGameplayTag> GetDamageType() const {return DamageType;}
 
-	void SetDebuffDamage(float InDebuffDamage) {DebuffDamage = InDebuffDamage;}
-	void SetDebuffDuration(float InDebuffDuration) {DebuffDuration = InDebuffDuration;}
-	void SetDebuffFrequency(float InDebuffFrequency) {DebuffFrequency = InDebuffFrequency;}
-	void SetDamageType(const TSharedPtr<FGameplayTag>& InDebuffTag) {DebuffType = InDebuffTag;}
+	void SetDebuffDamage(const float InDebuffDamage) {DebuffDamage = InDebuffDamage;}
+	void SetDebuffDuration(const float InDebuffDuration) {DebuffDuration = InDebuffDuration;}
+	void SetDebuffFrequency(const float InDebuffFrequency) {DebuffFrequency = InDebuffFrequency;}
+	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) {DamageType = InDamageType;}
 	
 	virtual UScriptStruct* GetScriptStruct() const 
 	{
@@ -109,7 +109,7 @@ protected:
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
 
-	TSharedPtr<FGameplayTag> DebuffType;
+	TSharedPtr<FGameplayTag> DamageType;
 	
 };
 
