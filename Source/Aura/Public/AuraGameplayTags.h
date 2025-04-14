@@ -19,6 +19,7 @@ struct FAuraGameplayTags
 	static void InitializeNativeGameplayTags();
 
 	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances;
+	TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuffs;
 	
 #pragma region Primary Tags
 	FGameplayTag Attributes_Primary_Strength;
@@ -44,14 +45,6 @@ struct FAuraGameplayTags
 	FGameplayTag Attributes_Meta_IncomingXP;
 #pragma endregion
 
-#pragma region Resistances
-	FGameplayTag Attributes_Resistance_Fire;
-	FGameplayTag Attributes_Resistance_Lightning;
-	FGameplayTag Attributes_Resistance_Ice;
-	FGameplayTag Attributes_Resistance_Arcane;
-	FGameplayTag Attributes_Resistance_Physical;
-#pragma endregion
-	
 #pragma region Input Tags
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
@@ -63,6 +56,14 @@ struct FAuraGameplayTags
 	FGameplayTag InputTag_Passive_2;
 #pragma endregion
 	
+#pragma region Resistances
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Ice;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
+#pragma endregion
+	
 #pragma region Damage Tags
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
@@ -71,7 +72,19 @@ struct FAuraGameplayTags
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
 #pragma endregion
-	
+
+#pragma region Debuff Tags	
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Freeze;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
+	FGameplayTag Debuff_Chance;
+	FGameplayTag Debuff_Damage;
+	FGameplayTag Debuff_Duration;
+	FGameplayTag Debuff_Frequency;
+	#pragma endregion
+
 #pragma region Abilities Tags
 	FGameplayTag Abilities_None;
 	

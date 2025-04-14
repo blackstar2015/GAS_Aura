@@ -26,8 +26,6 @@ struct AuraDamageStatics
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArcaneResistance);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(PhysicalResistance);
 	
-	TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDef;
-	
 	AuraDamageStatics()
 	{
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,Armor, Target, false);
@@ -41,21 +39,6 @@ struct AuraDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,IceResistance, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,ArcaneResistance, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,PhysicalResistance, Target, false);
-
-		//mapping attributes to gameplay tags
-		const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_Armor,ArmorDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_ArmorPenetration,ArmorPenetrationDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_BlockChance,ArmorDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritChance,CritChanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritDamage,CritDamageDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritResistance,CritResistanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Resistance_Fire,FireResistanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Resistance_Lightning,LightningResistanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Resistance_Ice,IceResistanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Resistance_Arcane,ArcaneResistanceDef);
-		TagsToCaptureDef.Add(Tags.Attributes_Resistance_Physical,PhysicalResistanceDef);
-
 	}
 };
 
@@ -80,9 +63,56 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(DamageStatics().PhysicalResistanceDef);
 }
 
-void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
-	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+	const FGameplayEffectSpec& Spec, FAggregatorEvaluateParameters EvaluationParameters,
+	const TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition>& InTagsToDefs) const
 {
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	for(const TTuple<FGameplayTag, FGameplayTag> Pair : GameplayTags.DamageTypesToDebuffs)
+	{
+		const FGameplayTag& DamageType = Pair.Key;
+		const FGameplayTag& DebuffType = Pair.Value;
+		const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType, false, -1.f);
+		if(TypeDamage > -.5f) //.5 padding for floating point imprecision
+		{
+			//Determine if there was a successful debuff
+			const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Chance, false, -1.f);
+
+			float TargetDebuffResistance = 0.f;
+			const FGameplayTag& ResistanceTag = GameplayTags.DamageTypesToResistances[DamageType];
+			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(InTagsToDefs[ResistanceTag], EvaluationParameters, TargetDebuffResistance);
+			TargetDebuffResistance = FMath::Max(TargetDebuffResistance, 0.f);
+			const float EffectiveDebuffChance = SourceDebuffChance * (100.f - TargetDebuffResistance)/100.f;
+			const bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
+			if(bDebuff)
+			{
+				
+			}
+		}
+	}
+}
+
+void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+{
+	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDef;
+	
+#pragma region mapping attributes to gameplay tags
+	const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
+
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_Armor,DamageStatics().ArmorDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_ArmorPenetration,DamageStatics().ArmorPenetrationDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_BlockChance,DamageStatics().ArmorDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritChance,DamageStatics().CritChanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritDamage,DamageStatics().CritDamageDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Secondary_CritResistance,DamageStatics().CritResistanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Resistance_Fire,DamageStatics().FireResistanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Resistance_Lightning,DamageStatics().LightningResistanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Resistance_Ice,DamageStatics().IceResistanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Resistance_Arcane,DamageStatics().ArcaneResistanceDef);
+	TagsToCaptureDef.Add(Tags.Attributes_Resistance_Physical,DamageStatics().PhysicalResistanceDef);
+#pragma endregion
+	
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
@@ -109,7 +139,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 	
-	
+#pragma region Debuffs
+	DetermineDebuff(ExecutionParams, Spec, EvaluationParameters, TagsToCaptureDef);
+#pragma endregion
 	
 #pragma region Damage
 	//Get Damage set by caller magnitude
@@ -119,10 +151,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		const FGameplayTag DamageTypeTag = Pair.Key;
 		const FGameplayTag ResistanceTag = Pair.Value;
 		
-		checkf(AuraDamageStatics().TagsToCaptureDef.Contains(ResistanceTag),
+		checkf(TagsToCaptureDef.Contains(ResistanceTag),
 			TEXT("TagsToCaptureDefs doesnt contain Tag: [%s] in ExecCalc_Damage"), *ResistanceTag.ToString());
 		
-		const FGameplayEffectAttributeCaptureDefinition CaptureDef = AuraDamageStatics().TagsToCaptureDef[ResistanceTag];
+		const FGameplayEffectAttributeCaptureDefinition CaptureDef = TagsToCaptureDef[ResistanceTag];
 
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key,false);
 		float Resistance = 0.f;
