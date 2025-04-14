@@ -21,17 +21,18 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 public:
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
-	//Enemy Interface
+	
+#pragma region Enemy Interface
 	virtual  void HighlightActor() override;
 	virtual  void UnHighlightActor() override;
-	//End Enemy Interface
+#pragma endregion
 
-	//Combat Interface
+#pragma region Combat Interface
 	virtual int32 GetPlayerLevel_Implementation() override;
 	virtual void Die() override;
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() override;
-	//End Combat Interface
+#pragma endregion
 	
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 

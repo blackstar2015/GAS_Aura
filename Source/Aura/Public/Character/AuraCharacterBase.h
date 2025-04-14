@@ -4,17 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "NiagaraSystem.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
-#include "AbilitySystemComponent.h"
 #include "AuraCharacterBase.generated.h"
 
-class UGameplayAbility;
-class UGameplayEffect;
+class UDebuffNiagaraComponent;
+class UNiagaraSystem;
+class UAbilitySystemComponent;
 class UAttributeSet;
-//class UAbilitySystemComponent;
+class UGameplayEffect;
+class UGameplayAbility;
 class UAnimMontage;
+
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -36,11 +38,18 @@ public:
 	virtual  FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;\
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath GetOnDeathDelegate() override;
+
+	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
-	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	
+	FOnASCRegistered OnASCRegistered;
+	FOnDeath OnDeath;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -99,6 +108,9 @@ protected:
 	//Minions
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Summons")
 	int32 MinionCount = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
