@@ -101,7 +101,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
 	const float LocalIncomingDamage = GetIncomingDamage();
-	SetIncomingDamage(0);
+	SetIncomingDamage(0.f);
 	if(LocalIncomingDamage > 0)
 	{
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
@@ -146,7 +146,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	const float DebuffDuration = UAuraAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
 	const float DebuffFrequency = UAuraAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
 	
-	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *UAuraAbilitySystemLibrary::GetDamageType(Props.EffectContextHandle).ToString());
+	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
 	UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
 
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
@@ -168,7 +168,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	
 	if (FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f))
 	{
-		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(EffectContext.Get());
+		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
 		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
 		AuraContext->SetDamageType(DebuffDamageType);
 		

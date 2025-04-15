@@ -169,8 +169,7 @@ bool UAuraAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle
 
 bool UAuraAbilitySystemLibrary::IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if (const FAuraGameplayEffectContext* AuraEffectContext =
-		static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->IsSuccessfulDebuff();
 	}
