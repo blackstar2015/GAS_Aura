@@ -89,7 +89,7 @@ protected:
 	TObjectPtr<UAttributeInfo> AttributeInfo;
 	
 	AAuraPlayerController* GetAuraPlayerController();
-	AAuraPlayerState* GetAuraPlayerState();
-	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
+	AAuraPlayerState* GetAuraPS();
+	UAuraAbilitySystemComponent* GetAuraASC();
 	UAuraAttributeSet* GetAuraAttributeSet();
 };

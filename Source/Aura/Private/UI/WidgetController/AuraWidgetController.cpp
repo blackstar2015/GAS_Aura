@@ -27,7 +27,7 @@ void UAuraWidgetController::BindCallbacksToDependencies()
 
 void UAuraWidgetController::BroadcastAbilityInfo()
 {
-	if (!GetAuraAbilitySystemComponent()->bStartupAbilitiesGiven) return;
+	if (!GetAuraASC()->bStartupAbilitiesGiven) return;
 	
 	FForEachAbility BroadcastDelegate;
 	BroadcastDelegate.BindLambda(
@@ -39,7 +39,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 			Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		});
-	GetAuraAbilitySystemComponent()->ForEachAbility(BroadcastDelegate);
+	GetAuraASC()->ForEachAbility(BroadcastDelegate);
 }
 
 AAuraPlayerController* UAuraWidgetController::GetAuraPlayerController()
@@ -51,7 +51,7 @@ AAuraPlayerController* UAuraWidgetController::GetAuraPlayerController()
 	return AuraPlayerController;
 }
 
-AAuraPlayerState* UAuraWidgetController::GetAuraPlayerState()
+AAuraPlayerState* UAuraWidgetController::GetAuraPS()
 {
 	if (AuraPlayerState == nullptr )
 	{
@@ -60,7 +60,7 @@ AAuraPlayerState* UAuraWidgetController::GetAuraPlayerState()
 	return AuraPlayerState;
 }
 
-UAuraAbilitySystemComponent* UAuraWidgetController::GetAuraAbilitySystemComponent()
+UAuraAbilitySystemComponent* UAuraWidgetController::GetAuraASC()
 {
 	if (AuraAbilitySystemComponent == nullptr )
 	{

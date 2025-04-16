@@ -20,8 +20,8 @@ void UOverlayWidgetController::BroadCastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	GetAuraPlayerState()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXpChanged);
-	GetAuraPlayerState()->OnLevelChangedDelegate.AddLambda(
+	GetAuraPS()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXpChanged);
+	GetAuraPS()->OnLevelChangedDelegate.AddLambda(
 		[this](int32 NewLevel)
 		{
 			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
@@ -59,19 +59,19 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	);
 
 	
-	if (GetAuraAbilitySystemComponent())
+	if (GetAuraASC())
 	{
-		GetAuraAbilitySystemComponent()->AbilityEquipped.AddUObject(this, &UOverlayWidgetController::OnAbilityEquipped);
-		if (GetAuraAbilitySystemComponent()->bStartupAbilitiesGiven)
+		GetAuraASC()->AbilityEquipped.AddUObject(this, &UOverlayWidgetController::OnAbilityEquipped);
+		if (GetAuraASC()->bStartupAbilitiesGiven)
 		{
 			BroadcastAbilityInfo();
 		}
 		else
 		{
-			GetAuraAbilitySystemComponent()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadcastAbilityInfo);			
+			GetAuraASC()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadcastAbilityInfo);			
 		}
 		
-		GetAuraAbilitySystemComponent()->EffectAssetTags.AddLambda
+		GetAuraASC()->EffectAssetTags.AddLambda
 		(
 			[this](const FGameplayTagContainer& AssetTags)
 			{
@@ -92,7 +92,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 void UOverlayWidgetController::OnXpChanged(int32 NewXP)
 {
-	const ULevelUpInfo* LevelUpInfo = GetAuraPlayerState()->LevelUpInfo;
+	const ULevelUpInfo* LevelUpInfo = GetAuraPS()->LevelUpInfo;
 	checkf(LevelUpInfo, TEXT("Level up info is null in AuraPlayerState BP"));
 
 	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);

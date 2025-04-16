@@ -60,21 +60,25 @@ void AAuraPlayerState::AddToAttributePoints(int32 InAttributePoints)
 void AAuraPlayerState::SetLevel(int32 InLevel)
 {
 	Level = InLevel;
+	OnLevelChangedDelegate.Broadcast(Level);
 }
 
 void AAuraPlayerState::SetXP(int32 InXP)
 {
 	XP = InXP;
+	OnXPChangedDelegate.Broadcast(XP);
 }
 
 void AAuraPlayerState::SetSpellPoints(int32 InSpellPoints)
 {
 	SpellPoints = InSpellPoints;
+	OnSpellPointChangedDelegate.Broadcast(SpellPoints);
 }
 
 void AAuraPlayerState::SetAttributePoints(int32 InAttributePoints)
 {
 	AttributePoints = InAttributePoints;
+	OnAttributePointChangedDelegate.Broadcast(AttributePoints);
 }
 
 void AAuraPlayerState::OnRep_Level(int32 OldLevel)
@@ -89,11 +93,11 @@ void AAuraPlayerState::OnRep_XP(int32 OldXP)
 
 void AAuraPlayerState::OnRep_AttributePoints(int32 OldAttributePoints)
 {
-	OnAttributePointChangedDelegate.Broadcast(OldAttributePoints);
+	OnAttributePointChangedDelegate.Broadcast(AttributePoints);
 }
 
 void AAuraPlayerState::OnRep_SpellPoints(int32 OldSpellPoints)
 {
-	OnSpellPointChangedDelegate.Broadcast(OldSpellPoints);
+	OnSpellPointChangedDelegate.Broadcast(SpellPoints);
 }
 

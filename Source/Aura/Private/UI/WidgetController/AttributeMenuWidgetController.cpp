@@ -21,7 +21,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	);
 	}
 
-	GetAuraPlayerState()->OnAttributePointChangedDelegate.AddLambda(
+	GetAuraPS()->OnAttributePointChangedDelegate.AddLambda(
 		[this](int32 AttributePoints)
 		{
 			AttributePointsChangeDelegate.Broadcast(AttributePoints);
@@ -38,7 +38,7 @@ void UAttributeMenuWidgetController::BroadCastInitialValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
-	AttributePointsChangeDelegate.Broadcast(GetAuraPlayerState()->GetAttributePoints());
+	AttributePointsChangeDelegate.Broadcast(GetAuraPS()->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
