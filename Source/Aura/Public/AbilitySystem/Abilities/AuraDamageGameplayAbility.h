@@ -19,7 +19,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
@@ -32,18 +32,27 @@ protected:
 	FScalableFloat BaseDamage;
 
 	//TODO: You can make these scalable floats
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Debuff")
 	float DebuffChance = 20.f;
 
 	//You can randomize these and apply level curves to these as well
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Debuff")
 	float DebuffDamage = 5.f;
 	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Debuff")
 	float DebuffDuration = 5.f;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Debuff")
 	float DebuffFrequency = 1.f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Damage Forces")
+	float DeathImpulseMagnitude = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Damage Forces")
+	float KnockBackForceMagnitude = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Damage Forces")
+	float KnockBackChance = 0.f;
 	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
