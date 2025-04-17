@@ -6,7 +6,6 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "WorldPartition/Cook/WorldPartitionCookPackage.h"
 
 FString UAuraFireBolt::GetDescription(int32 Level)
 {
@@ -104,38 +103,41 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 	
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
 		
-		if (HomingTarget->Implements<UCombatInterface>())
+		if (bLaunchHomingProjectiles)
 		{
-			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
-		}
-		else
-		{
-			Projectile-> HomingTargetSceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
-			Projectile->HomingTargetSceneComponent->SetWorldLocation(ProjectileTargetLocation);
-			Projectile->ProjectileMovement->HomingTargetComponent = Projectile-> HomingTargetSceneComponent;
-		}
-		//Removed original tutorial code for custom calculations of Homing acceleration
-		FVector SourceLocation = Projectile->DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor()->GetActorLocation();
-		FVector TargetLocation = HomingTarget->GetActorLocation();
+			if (HomingTarget->Implements<UCombatInterface>())
+			{
+				Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+			}
+			else
+			{
+				Projectile-> HomingTargetSceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+				Projectile->HomingTargetSceneComponent->SetWorldLocation(ProjectileTargetLocation);
+				Projectile->ProjectileMovement->HomingTargetComponent = Projectile-> HomingTargetSceneComponent;
+			}
+			//Removed original tutorial code for custom calculations of Homing acceleration
+			FVector SourceLocation = Projectile->DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor()->GetActorLocation();
+			FVector TargetLocation = HomingTarget->GetActorLocation();
 		
-		const float DistanceToTarget = FVector::Dist(SourceLocation, TargetLocation);
-		const float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());
-		const float DistTimesGrav =  DistanceToTarget * Gravity;
-		float PitchRadians = FMath::DegreesToRadians(PitchOverride);
-		float PitchSinVal = FMath::Sin(2 * PitchRadians);
+			const float DistanceToTarget = FVector::Dist(SourceLocation, TargetLocation);
+			const float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());
+			const float DistTimesGrav =  DistanceToTarget * Gravity;
+			float PitchRadians = FMath::DegreesToRadians(PitchOverride);
+			float PitchSinVal = FMath::Sin(2 * PitchRadians);
 		
-		// Small non-zero fallback to avoid crash
-		if (FMath::IsNearlyZero(PitchSinVal))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
-			PitchSinVal = 0.01f;
+			// Small non-zero fallback to avoid crash
+			if (FMath::IsNearlyZero(PitchSinVal))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
+				PitchSinVal = 0.01f;
+			}
+			//original code
+			//Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+		
+			HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal) + Offset;
+			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::Min(HomingAccelerationMin, HomingAccelerationMax);
+			Projectile->ProjectileMovement->bIsHomingProjectile = true;
 		}
-		//original code
-		//Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
-		
-		HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal) + Offset;
-		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::Min(HomingAccelerationMin, HomingAccelerationMax);
-		Projectile->ProjectileMovement->bIsHomingProjectile = bLaunchHomingProjectiles;
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
