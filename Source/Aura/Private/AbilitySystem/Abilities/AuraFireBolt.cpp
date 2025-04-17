@@ -79,7 +79,7 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		GetAvatarActorFromActorInfo(),
 		SocketTag);
 
-	bool IsWithinDistance = FVector::Dist(HomingTarget->GetActorLocation(), GetAvatarActorFromActorInfo()->GetActorLocation()) < MinDistanceForHoming;
+	const bool IsWithinDistance = FVector::Dist(ProjectileTargetLocation, GetAvatarActorFromActorInfo()->GetActorLocation()) < MinDistanceForHoming;
 	
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	if (bOverridePitch && !IsWithinDistance) Rotation.Pitch = PitchOverride;
@@ -89,7 +89,7 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		ProjectileSpread = ProjectileSpread / 3.f;
 	}
 
-	NumProjectiles = FMath::Min(GetAbilityLevel(), MaxNumProjectiles);
+	//NumProjectiles = FMath::Min(GetAbilityLevel(), MaxNumProjectiles);
 	const FVector Forward = Rotation.Vector();
 
 
