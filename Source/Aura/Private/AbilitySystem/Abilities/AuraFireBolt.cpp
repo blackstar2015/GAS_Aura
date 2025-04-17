@@ -78,9 +78,12 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
 		SocketTag);
+
+	bool IsWithinDistance = FVector::Dist(ProjectileTargetLocation, GetAvatarActorFromActorInfo()->GetActorLocation()) < MinDistanceForHoming;
 	
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
-	if (bOverridePitch) Rotation.Pitch = PitchOverride;
+	if (bOverridePitch && !IsWithinDistance) Rotation.Pitch = PitchOverride;
+	else Rotation.Pitch = 0.f;
 
 	NumProjectiles = FMath::Min(GetAbilityLevel(), MaxNumProjectiles);
 	const FVector Forward = Rotation.Vector();
@@ -91,7 +94,7 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 	for (const FRotator& Rotator : Rotations)
 	{
 		FTransform SpawnTransform;
-		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetLocation(SocketLocation -  FVector(0,0,75));
 		SpawnTransform.SetRotation(Rotator.Quaternion());
 
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
@@ -118,27 +121,38 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 			//Removed original tutorial code for custom calculations of Homing acceleration
 			FVector SourceLocation = Projectile->DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor()->GetActorLocation();
 			FVector TargetLocation = HomingTarget->GetActorLocation();
-		
 			const float DistanceToTarget = FVector::Dist(SourceLocation, TargetLocation);
-			const float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());
-			const float DistTimesGrav =  DistanceToTarget * Gravity;
-			float PitchRadians = FMath::DegreesToRadians(PitchOverride);
-			float PitchSinVal = FMath::Sin(2 * PitchRadians);
 		
-			// Small non-zero fallback to avoid crash
-			if (FMath::IsNearlyZero(PitchSinVal))
+			//Don't use Homing if distance is too small
+			if (DistanceToTarget >= MinDistanceForHoming)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
-				PitchSinVal = 0.01f;
+				float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());
+				const float DistTimesGrav =  DistanceToTarget * Gravity;
+				float PitchRadians = FMath::DegreesToRadians(PitchOverride);
+				float PitchSinVal = FMath::Sin(2 * PitchRadians);
+			
+				// Small non-zero fallback to avoid crash
+				if (FMath::IsNearlyZero(PitchSinVal))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
+					PitchSinVal = 0.01f;
+				}
+				//original code
+				//Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);			
+				HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal) + Offset;
+				Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::Min(HomingAccelerationMin, HomingAccelerationMax);
+				Projectile->ProjectileMovement->bIsHomingProjectile = true;
 			}
-			//original code
-			//Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
-		
-			HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal) + Offset;
-			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::Min(HomingAccelerationMin, HomingAccelerationMax);
-			Projectile->ProjectileMovement->bIsHomingProjectile = true;
+			else
+			{
+				Projectile->ProjectileMovement->bIsHomingProjectile = false;
+				Projectile->ProjectileMovement->ProjectileGravityScale = 0.f;
+				Rotation.Pitch = 0.f;
+				PitchOverride = 0.f;
+				Offset = 0.f;
+				HomingAccelerationMin = 750.f;
+			}
 		}
-		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

@@ -35,6 +35,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Fire")
 	float Offset = 200.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Fire")
+	float MinDistanceForHoming = 300.f;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Fire")
 	bool bLaunchHomingProjectiles = true;
