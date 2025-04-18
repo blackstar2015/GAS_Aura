@@ -350,7 +350,7 @@ TArray<FRotator> UAuraAbilitySystemLibrary::EvenlySpacedRotators(const FVector& 
 		const float DeltaSpread = Spread / (NumRotators - 1);
 		for (int32 i = 0; i < NumRotators; i++)
 		{			
-			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, Axis);
 			Rotators.Add(Direction.Rotation());
 		}
 	}
@@ -371,7 +371,7 @@ TArray<FVector> UAuraAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& F
 		const float DeltaSpread = Spread / (NumVectors - 1);
 		for (int32 i = 0; i < NumVectors; i++)
 		{			
-			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, Axis);
 			Vectors.Add(Direction);
 		}
 	}
