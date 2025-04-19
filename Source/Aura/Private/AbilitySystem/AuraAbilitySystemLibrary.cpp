@@ -382,6 +382,20 @@ TArray<FVector> UAuraAbilitySystemLibrary::EvenlyRotatedVectors(const FVector& F
 	return Vectors;
 }
 
+float UAuraAbilitySystemLibrary::CalculateLaunchAngleDegrees(float Distance, float Speed, float Gravity)
+{
+	float Argument = (Distance * Gravity) / (Speed * Speed);
+
+	if (Argument > 1.f || Argument < -1.f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid input: arcsine(%.2f) is undefined"), Argument);
+		return -1.f; // Impossible shot
+	}
+
+	float AngleRadians = 0.5f * FMath::Asin(Argument);
+	return FMath::RadiansToDegrees(AngleRadians);
+}
+
 bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
 {
 	const bool bBothArePlayers = FirstActor->ActorHasTag(FName("Player")) && SecondActor->ActorHasTag(FName("Player"));

@@ -66,7 +66,7 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static float GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle);
-
+	
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static FGameplayTag GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle);
 
@@ -118,6 +118,9 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayMechanics")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors);
+
+	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static  float CalculateLaunchAngleDegrees(float Distance, float Speed, float Gravity = 980.f);
 	
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
 };

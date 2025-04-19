@@ -69,8 +69,7 @@ FString UAuraFireBolt::GetNextLevelDescription(int32 Level)
 		Damage);
 }
 
-void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,
-	bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
+void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
@@ -80,7 +79,6 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		SocketTag);
 
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
-	if (bOverridePitch) Rotation.Pitch = PitchOverride;
 	const FVector Forward = Rotation.Vector();
 	
 	if(bUseAbilityLevelForNumProjectiles) NumProjectiles = FMath::Min(GetAbilityLevel(), MaxNumProjectiles);
@@ -88,6 +86,11 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 
 	for (const FRotator& Rotator : Rotations)
 	{
+		float HomingAccelerationMag = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+		FVector TargetLocation = HomingTarget->GetActorLocation();
+		const float DistanceToTarget = FVector::Dist(SocketLocation, TargetLocation);
+		PitchOverride = UAuraAbilitySystemLibrary::CalculateLaunchAngleDegrees(DistanceToTarget, HomingAccelerationMag);
+		if (bOverridePitch) Rotation.Pitch = PitchOverride;
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
 		SpawnTransform.SetRotation(Rotator.Quaternion());
@@ -111,28 +114,32 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 			Projectile->HomingTargetSceneComponent->SetWorldLocation(ProjectileTargetLocation);
 			Projectile->ProjectileMovement->HomingTargetComponent = Projectile->HomingTargetSceneComponent;
 		}
-		//Removed original tutorial code for custom calculations of Homing acceleration
-		// FVector SourceLocation = Projectile->DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor()->GetActorLocation();
-		// FVector TargetLocation = HomingTarget->GetActorLocation();
-		// const float DistanceToTarget = FVector::Dist(SourceLocation, TargetLocation);
-		// float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());		
-		//
-		// const float DistTimesGrav =  DistanceToTarget * Gravity;
-		// float PitchRadians = FMath::DegreesToRadians(PitchOverride);
-		// float PitchSinVal = FMath::Sin(2 * PitchRadians);
-		//
-		// // Small non-zero fallback to avoid crash
-		// if (FMath::IsNearlyZero(PitchSinVal))
-		// {
-		// 	UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
-		// 	PitchSinVal = 0.01f;
-		// }				
-		//HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal);
-		//original code
-		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);			
+		
+		Projectile->ProjectileMovement->HomingAccelerationMagnitude = HomingAccelerationMag;
 		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::Min(HomingAccelerationMin, HomingAccelerationMax);
 		Projectile->ProjectileMovement->bIsHomingProjectile = bLaunchHomingProjectiles;
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
+	
+
+// Alternate code to calculate speed instead of angle
+// FVector SourceLocation = Projectile->DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor()->GetActorLocation();
+// FVector TargetLocation = HomingTarget->GetActorLocation();
+// const float DistanceToTarget = FVector::Dist(SourceLocation, TargetLocation);
+// float Gravity = FMath::Abs(Projectile->ProjectileMovement->GetGravityZ());		
+//
+// const float DistTimesGrav =  DistanceToTarget * Gravity;
+// float PitchRadians = FMath::DegreesToRadians(PitchOverride);
+// float PitchSinVal = FMath::Sin(2 * PitchRadians);
+//
+// // Small non-zero fallback to avoid crash
+// if (FMath::IsNearlyZero(PitchSinVal))
+// {
+// 	UE_LOG(LogTemp, Warning, TEXT("Invalid pitch: sin(2θ) is zero! Check PitchOverride = %f"), PitchOverride);
+// 	PitchSinVal = 0.01f;
+// }				
+//HomingAccelerationMin = FMath::Sqrt(DistTimesGrav / PitchSinVal);
 }
+
+
