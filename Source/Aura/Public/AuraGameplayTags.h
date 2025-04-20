@@ -137,6 +137,13 @@ struct FAuraGameplayTags
 #pragma region Effect Tags
 	FGameplayTag Effects_HitReact;
 #pragma endregion
+
+#pragma region Player Tags
+    FGameplayTag Player_Block_InputPressed;
+    FGameplayTag Player_Block_InputReleased;
+    FGameplayTag Player_Block_InputHeld;
+    FGameplayTag Player_Block_CursorTrace;
+#pragma endregion
 private:
 	static FAuraGameplayTags GameplayTags;
 		
