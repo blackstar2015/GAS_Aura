@@ -146,5 +146,4 @@ struct FAuraGameplayTags
 #pragma endregion
 private:
 	static FAuraGameplayTags GameplayTags;
-		
 };
