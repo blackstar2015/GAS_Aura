@@ -40,7 +40,7 @@ public:
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
-	virtual FOnDeath GetOnDeathDelegate() override;
+	virtual FOnDeathSignature& GetOnDeathDelegate() override;
     virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
@@ -50,7 +50,7 @@ public:
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 	
 	FOnASCRegistered OnASCRegistered;
-	FOnDeath OnDeath;
+	FOnDeathSignature OnDeathDelegate;
 	
 protected:
 	virtual void BeginPlay() override;
