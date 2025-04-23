@@ -35,33 +35,33 @@ public:
 #pragma endregion
 	
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-
+	void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(BlueprintReadOnly, Category = "Combat|Properties")
 	bool bHitReacting = false;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat")
-	float BaseWalkSpeed = 250.f;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat")
+	
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat|Properties")
 	float Lifespan = 5.f;
-	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Combat|Properties")
 	TObjectPtr<AActor> CombatTarget;
 	
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat|Character Class Defaults")
 	int32 Level = 1;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 
 	//AI
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY(EditAnywhere, Category = "Combat|AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
