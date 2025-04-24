@@ -101,6 +101,13 @@ struct FAuraGameplayTags
 #pragma region Lightning Abilities Tags		
 	FGameplayTag Abilities_Lightning_Electrocute;
 #pragma endregion
+
+#pragma region Passive Abilities Tags
+	FGameplayTag Abilities_Passive_HaloOfProtection;
+	FGameplayTag Abilities_Passive_LifeSiphon;
+	FGameplayTag Abilities_Passive_ManaSiphon;
+#pragma endregion
+
 	
 #pragma region Ability Status Tags
 	FGameplayTag Abilities_Status_Locked;
