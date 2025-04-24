@@ -22,14 +22,12 @@ void UDebuffNiagaraComponent::BeginPlay()
 	if (UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner()))
 	{
 		ASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
-		UE_LOG(LogAura, Warning, TEXT("Register GPT called 1 [%s]"),  *GetNameSafe(this));
 	}
 	else if (CombatInterface)
 	{
 		CombatInterface->GetOnASCRegisteredDelegate().AddWeakLambda(this, [this](UAbilitySystemComponent* InASC)
 		{
 			InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
-			UE_LOG(LogAura, Warning, TEXT("Register GPT called 1 [%s]"),  *GetNameSafe(this));
 		});
 	}
 	if (CombatInterface)
@@ -56,6 +54,5 @@ void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, i
 void UDebuffNiagaraComponent::OnOwnerDeath(AActor* DeadActor)
 {
 	Deactivate();
-	UE_LOG(LogAura, Warning, TEXT("On Death called on [%s]"),  *GetNameSafe(this));
 
 }

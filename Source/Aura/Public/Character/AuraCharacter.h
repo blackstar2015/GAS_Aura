@@ -21,7 +21,9 @@ public:
 	AAuraCharacter();
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
-
+	virtual void OnRep_Stunned() override;
+	virtual void OnRep_Burned() override;
+	
 # pragma region CombatInterface
 	virtual int32 GetPlayerLevel_Implementation() override;
 #pragma endregion

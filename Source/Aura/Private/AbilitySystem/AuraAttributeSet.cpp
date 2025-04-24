@@ -130,12 +130,12 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 				Props.TargetCharacter->GetCharacterMovement()->StopMovementImmediately();
 				Props.TargetCharacter->LaunchCharacter(KnockBack,true,false);
 			}
-			else
-			{
+			else if (Props.TargetCharacter->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsBeingShocked(Props.TargetCharacter))
+			{				
 				//HitReact
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(FAuraGameplayTags::Get().Abilities_HitReact);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);				
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 			
 		}
