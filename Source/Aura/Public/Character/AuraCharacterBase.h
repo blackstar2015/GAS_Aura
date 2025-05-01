@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
@@ -24,6 +25,7 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	AAuraCharacterBase();
+	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -145,4 +147,12 @@ private:
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 	UPROPERTY(EditAnywhere, Category = "Combat|Montages")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> HaloOfProtectionNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> LifeSiphonNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> EffectAttachComponent;
 };

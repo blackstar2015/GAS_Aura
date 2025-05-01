@@ -136,10 +136,11 @@ void USpellMenuWidgetController::GlobeDeselect()
 
 void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType)
 {
-	if(!bWaitingForEquipSelection) return;
-	//Check selected ability against slots ability type. check for offensive/passive slots and ability
+	if (!bWaitingForEquipSelection) return;
+	// Check selected ability against the slot's ability type.
+	// (don't equip an offensive spell in a passive slot and vice versa)
 	const FGameplayTag& SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
-	if (!SelectedAbilityType.MatchesTagExact(AbilityType)) return; 
+	if (!SelectedAbilityType.MatchesTagExact(AbilityType)) return;
 
 	GetAuraASC()->ServerEquipAbility(SelectedAbility.Ability, SlotTag);
 }

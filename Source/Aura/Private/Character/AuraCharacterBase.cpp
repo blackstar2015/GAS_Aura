@@ -14,7 +14,7 @@
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
- 	PrimaryActorTick.bCanEverTick = false;
+ 	PrimaryActorTick.bCanEverTick = true;
 
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	
@@ -36,6 +36,23 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//Passive Niagara system effects
+	EffectAttachComponent = CreateDefaultSubobject<USceneComponent>("EffectAttachPoint");
+	EffectAttachComponent->SetupAttachment(GetRootComponent());
+	HaloOfProtectionNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("HaloOfProtectionNiagaraComponent");
+	HaloOfProtectionNiagaraComponent->SetupAttachment(EffectAttachComponent);
+	LifeSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("LifeSiphonNiagaraComponent");
+	LifeSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
+	ManaSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("ManaSiphonNiagaraComponent");
+	ManaSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
+}
+
+void AAuraCharacterBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	EffectAttachComponent->SetWorldRotation(FRotator::ZeroRotator);
 }
 
 void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
