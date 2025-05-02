@@ -159,6 +159,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 			FString("Electrocute Ability Tag"));	
 #pragma endregion
 
+#pragma region Arcane Abilities
+	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Arcane.ArcaneShards"),
+			FString("ArcaneShards Ability Tag"));	
+#pragma endregion
+
 #pragma region Passive Abilities
 	GameplayTags.Abilities_Passive_LifeSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Passive.LifeSiphon"),
 	FString("Life Siphon Ability Tag"));

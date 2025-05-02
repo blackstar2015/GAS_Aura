@@ -102,6 +102,10 @@ struct FAuraGameplayTags
 	FGameplayTag Abilities_Lightning_Electrocute;
 #pragma endregion
 
+#pragma region Arcane Abilities Tags		
+	FGameplayTag Abilities_Arcane_ArcaneShards;
+#pragma endregion
+	
 #pragma region Passive Abilities Tags
 	FGameplayTag Abilities_Passive_HaloOfProtection;
 	FGameplayTag Abilities_Passive_LifeSiphon;
