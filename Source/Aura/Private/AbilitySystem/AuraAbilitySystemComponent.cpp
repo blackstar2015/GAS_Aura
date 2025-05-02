@@ -206,11 +206,10 @@ bool UAuraAbilitySystemComponent::AbilityHasSlot(const FGameplayAbilitySpec& Abi
 	return AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(Slot);
 }
 
-bool UAuraAbilitySystemComponent::AbilityHasAnySlot(const FGameplayAbilitySpec& AbilitySpec)
+bool UAuraAbilitySystemComponent::AbilityHasAnySlot(const FGameplayAbilitySpec& Spec)
 {
-	return AbilitySpec.GetDynamicSpecSourceTags().HasTag(FGameplayTag::RequestGameplayTag(FName("InputTag")));
+	return Spec.GetDynamicSpecSourceTags().HasTag(FGameplayTag::RequestGameplayTag(FName("InputTags")));
 }
-
 bool UAuraAbilitySystemComponent::IsPassiveAbility(const FGameplayAbilitySpec& AbilitySpec) const
 {
 	const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
@@ -328,24 +327,27 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 									|| Status == GameplayTags.Abilities_Status_Unlocked;
 		if (bStatusValid)
 		{
-			//Handle activation for passive abilities
-			if (!SlotIsEmpty(Slot)) //There is an ability in this slot already. Deactivate and clear this slot
+
+			// Handle activation/deactivation for passive abilities
+
+			if (!SlotIsEmpty(Slot)) // There is an ability in this slot already. Deactivate and clear its slot.
 			{
-				 FGameplayAbilitySpec* SpecWithSlot = GetSpecWithSlot(Slot);
+				FGameplayAbilitySpec* SpecWithSlot = GetSpecWithSlot(Slot);
 				if (SpecWithSlot)
 				{
-					//Is that Ability the same as this ability. if so return early
+					// is that ability the same as this ability? If so, we can return early.
 					if (AbilityTag.MatchesTagExact(GetAbilityTagFromSpec(*SpecWithSlot)))
 					{
-						ClientEquipAbility(AbilityTag,GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
+						ClientEquipAbility(AbilityTag, GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
 						return;
 					}
-					
+
 					if (IsPassiveAbility(*SpecWithSlot))
 					{
 						MulticastActivatePassiveEffect(GetAbilityTagFromSpec(*SpecWithSlot), false);
 						DeactivatePassiveAbility.Broadcast(GetAbilityTagFromSpec(*SpecWithSlot));
 					}
+
 					ClearSlot(SpecWithSlot);
 				}
 			}
@@ -358,10 +360,10 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 					MulticastActivatePassiveEffect(AbilityTag, true);
 				}
 			}
-			AssignSlotToAbility(*AbilitySpec,Slot);
+			AssignSlotToAbility(*AbilitySpec, Slot);
 			MarkAbilitySpecDirty(*AbilitySpec);
 		}
-		ClientEquipAbility(AbilityTag,GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
+		ClientEquipAbility(AbilityTag, GameplayTags.Abilities_Status_Equipped, Slot, PrevSlot);
 	}
 }
 
