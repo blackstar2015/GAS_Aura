@@ -9,6 +9,7 @@
 #include "Net/UnrealNetwork.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
@@ -108,7 +109,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	{
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
-			
+		
 		const bool bFatal = NewHealth <= 0.f;
 		if (bFatal)
 		{
@@ -148,6 +149,24 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			//stuff
 			Debuff(Props);
 		}
+					
+#pragma region LifeSiphon
+		FGameplayTagContainer LifeTagContainer;
+		LifeTagContainer.AddTag(FAuraGameplayTags::Get().Abilities_Passive_LifeSiphon);
+		if (Props.SourceASC->HasAnyMatchingGameplayTags(LifeTagContainer))
+		{
+			SendLifeSiphonEvent(Props);
+		}
+#pragma endregion
+
+#pragma region ManaSiphon
+		FGameplayTagContainer ManaTagContainer;
+		ManaTagContainer.AddTag(FAuraGameplayTags::Get().Abilities_Passive_ManaSiphon);
+		if (Props.SourceASC->HasAnyMatchingGameplayTags(ManaTagContainer))
+		{
+			SendManaSiphonEvent(Props);
+		}
+#pragma endregion
 	}
 }
 
@@ -348,6 +367,24 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props) const
 		
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 	}
+}
+
+void UAuraAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props) const
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	FGameplayEventData Payload;
+	Payload.EventTag = GameplayTags.Attributes_Vital_Health;
+	Payload.EventMagnitude = 10.f;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Health, Payload);
+}
+
+void UAuraAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props) const
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	FGameplayEventData Payload;
+	Payload.EventTag = GameplayTags.Attributes_Vital_Mana;
+	Payload.EventMagnitude = 10.f;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Mana, Payload);
 }
 
 #pragma region PrimaryAttribute 

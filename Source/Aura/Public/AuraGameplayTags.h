@@ -40,6 +40,11 @@ struct FAuraGameplayTags
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 #pragma endregion
+
+#pragma region Vital Tags
+	FGameplayTag Attributes_Vital_Health;
+	FGameplayTag Attributes_Vital_Mana;
+#pragma endregion
 	
 #pragma region Meta Attribute Tags
 	FGameplayTag Attributes_Meta_IncomingXP;
@@ -108,11 +113,13 @@ struct FAuraGameplayTags
 	
 #pragma region Passive Abilities Tags
 	FGameplayTag Abilities_Passive_HaloOfProtection;
+	FGameplayTag Abilities_Passive_HaloOfProtectionActive;
 	FGameplayTag Abilities_Passive_LifeSiphon;
+	FGameplayTag Abilities_Passive_LifeSiphonActive;
 	FGameplayTag Abilities_Passive_ManaSiphon;
+	FGameplayTag Abilities_Passive_ManaSiphonActive;
 #pragma endregion
 
-	
 #pragma region Ability Status Tags
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;
@@ -129,6 +136,7 @@ struct FAuraGameplayTags
 #pragma region Cooldown Tags
 	FGameplayTag Cooldown_Fire_FireBolt;
 	FGameplayTag Cooldown_Lightning_Electrocute;
+	FGameplayTag Cooldown_Arcane_ArcaneShards;
 #pragma endregion
 	
 #pragma region Combat Socket Tags

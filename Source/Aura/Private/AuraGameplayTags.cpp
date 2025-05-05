@@ -42,6 +42,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Max Mana obtainable"));
 #pragma endregion
 
+#pragma region Vital Attributes
+	GameplayTags.Attributes_Vital_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Health"),
+		FString("Health Attribute"));
+	GameplayTags.Attributes_Vital_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Mana"),
+	FString("Mana Attribute"));
+#pragma endregion
+	
 #pragma region Meta Attributes
 	GameplayTags.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Meta.IncomingXP"),
 		FString("Incoming XP Meta Attribute"));
@@ -198,6 +205,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 				FString("FireBolt Cooldown Tag"));
 	GameplayTags.Cooldown_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Lightning.Electrocute"),
 				FString("Electrocute Cooldown Tag"));
+	GameplayTags.Cooldown_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Arcane.ArcaneShards"),
+				FString("ArcaneShards Cooldown Tag"));
 #pragma endregion
 
 #pragma region Combat Sockets
@@ -232,5 +241,4 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
     GameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Player.Block.CursorTrace"),
             FString("Block tracing under the cursor"));
 #pragma endregion
-
 }

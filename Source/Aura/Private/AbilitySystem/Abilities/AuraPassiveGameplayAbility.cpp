@@ -7,7 +7,8 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 void UAuraPassiveGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                                  const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+                                                  const FGameplayAbilityActorInfo* ActorInfo,
+                                                  const FGameplayAbilityActivationInfo ActivationInfo,
                                                   const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);

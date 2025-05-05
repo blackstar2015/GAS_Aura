@@ -11,6 +11,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 
 struct AuraDamageStatics
@@ -245,6 +246,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bIsCrit = RandCritChance < ((SourceCritChance * CritChanceCoefficient) - (TargetCritResistance * CritResistanceCoefficient));
 	UAuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle,bIsCrit);
 	Damage = bIsCrit ? (Damage*2 + SourceCritDamage) : Damage;
+#pragma endregion
+
+#pragma region Halo of Protection
+	if (TargetTags->HasTagExact(FAuraGameplayTags::Get().Abilities_Passive_HaloOfProtection))
+	{
+		Damage -= Damage * .5f;
+	}	
 #pragma endregion
 
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(),
