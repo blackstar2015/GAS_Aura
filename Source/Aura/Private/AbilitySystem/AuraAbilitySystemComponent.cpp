@@ -46,6 +46,7 @@ void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(
 void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 	if(!InputTag.IsValid()) return;
+	// Block the scope because the activatable abilities can change while the for loop is running
 	FScopedAbilityListLock ActiveScopeLock(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
@@ -57,7 +58,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 				TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
 				for (UGameplayAbility* AbilityInstance : AbilityInstances)
 				{
-					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
 				}
 			}
 		}
