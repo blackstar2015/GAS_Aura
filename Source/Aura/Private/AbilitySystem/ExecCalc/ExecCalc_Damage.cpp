@@ -251,7 +251,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 #pragma region Halo of Protection
 	if (TargetTags->HasTagExact(FAuraGameplayTags::Get().Abilities_Passive_HaloOfProtection))
 	{
-		Damage -= Damage * .5f;
+		Damage = Damage * .15f * EffectContextHandle.GetAbilityLevel();
 	}	
 #pragma endregion
 

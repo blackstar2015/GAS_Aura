@@ -373,8 +373,9 @@ void UAuraAttributeSet::SendLifeSiphonEvent(const FEffectProperties& Props) cons
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	FGameplayEventData Payload;
+	int32 AbilityLevel = Props.EffectContextHandle.GetAbilityLevel();
 	Payload.EventTag = GameplayTags.Attributes_Vital_Health;
-	Payload.EventMagnitude = 10.f;
+	Payload.EventMagnitude = GetMaxHealth() * AbilityLevel/20;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Health, Payload);
 }
 
@@ -382,8 +383,9 @@ void UAuraAttributeSet::SendManaSiphonEvent(const FEffectProperties& Props) cons
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	FGameplayEventData Payload;
+	int32 AbilityLevel = Props.EffectContextHandle.GetAbilityLevel();
 	Payload.EventTag = GameplayTags.Attributes_Vital_Mana;
-	Payload.EventMagnitude = 10.f;
+	Payload.EventMagnitude = GetMaxMana() * AbilityLevel/20;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Vital_Mana, Payload);
 }
 
