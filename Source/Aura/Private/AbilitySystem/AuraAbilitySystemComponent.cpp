@@ -53,20 +53,18 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 		FAuraGameplayTags TagContainer = FAuraGameplayTags::Get();
 		if (HasMatchingGameplayTag(TagContainer.Abilities_WaitingExecution))
 		{
+			//if ability is waiting for another input to activate the spell check for LMB
 			if (AbilitySpec.Ability->AbilityTags.HasTagExact(TagContainer.Abilities_WaitingExecution) && AbilitySpec.IsActive())
 			{
 				if (InputTag.MatchesTagExact(TagContainer.InputTag_LMB))
 				{
 					AbilitySpecInputPressed(AbilitySpec);
-					if (AbilitySpec.IsActive())
+					TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
+					for (UGameplayAbility* AbilityInstance : AbilityInstances)
 					{
-						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
-						for (UGameplayAbility* AbilityInstance : AbilityInstances)
-						{
-							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
-								AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
-							return;
-						}
+						InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
+							AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+						return;
 					}
 				}
 			}
@@ -80,7 +78,9 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
 						for (UGameplayAbility* AbilityInstance : AbilityInstances)
 						{
-							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle,
+							                      AbilityInstance->GetCurrentActivationInfo().
+							                                       GetActivationPredictionKey());
 							return;
 						}
 					}
