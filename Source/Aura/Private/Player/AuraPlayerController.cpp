@@ -37,6 +37,7 @@ void AAuraPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 	if(!IsValid(MagicCircle))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+		bShowMagicCircle = true;
 		if(DecalMaterial)
 		{
 			MagicCircle->MagicCircleDecal->SetMaterial(0,DecalMaterial);
@@ -48,7 +49,8 @@ void AAuraPlayerController::HideMagicCircle()
 {
 	if(IsValid(MagicCircle))
 	{
-		MagicCircle->Destroy();		
+		MagicCircle->Destroy();
+		bShowMagicCircle = false;
 	}
 }
 
@@ -250,7 +252,7 @@ void AAuraPlayerController::SetupInputComponent()
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	if(GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed)) return;
-
+	if (bShowMagicCircle) return;
 	const FVector2d InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = 	GetControlRotation();
 	const FRotator YawRotation(0.f,Rotation.Yaw,0.f);

@@ -68,7 +68,7 @@ private:
 	bool bShiftKeyDown = false;
 	bool bAutoRunning = false;
 	bool bTargeting = false;
-
+	bool bShowMagicCircle = false;
 	void ShiftPressed() {bShiftKeyDown = true;}
 	void ShiftReleased() {bShiftKeyDown = false;}	
 	void Move(const FInputActionValue& InputActionValue);

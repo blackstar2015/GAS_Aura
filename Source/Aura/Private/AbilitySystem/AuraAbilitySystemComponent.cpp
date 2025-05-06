@@ -63,7 +63,8 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 					for (UGameplayAbility* AbilityInstance : AbilityInstances)
 					{
 						InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
-							AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+							AbilitySpec.Handle,
+							AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
 						return;
 					}
 				}
@@ -78,9 +79,9 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
 						for (UGameplayAbility* AbilityInstance : AbilityInstances)
 						{
-							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle,
-							                      AbilityInstance->GetCurrentActivationInfo().
-							                                       GetActivationPredictionKey());
+							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
+								AbilitySpec.Handle,
+								AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
 							return;
 						}
 					}
