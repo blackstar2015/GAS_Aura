@@ -50,15 +50,40 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 	FScopedAbilityListLock ActiveScopeLock(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+		FAuraGameplayTags TagContainer = FAuraGameplayTags::Get();
+		if (HasMatchingGameplayTag(TagContainer.Abilities_WaitingExecution))
 		{
-			AbilitySpecInputPressed(AbilitySpec);
-			if (AbilitySpec.IsActive())
+			if (AbilitySpec.Ability->AbilityTags.HasTagExact(TagContainer.Abilities_WaitingExecution) && AbilitySpec.IsActive())
 			{
-				TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
-				for (UGameplayAbility* AbilityInstance : AbilityInstances)
+				if (InputTag.MatchesTagExact(TagContainer.InputTag_LMB))
 				{
-					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+					AbilitySpecInputPressed(AbilitySpec);
+					if (AbilitySpec.IsActive())
+					{
+						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
+						for (UGameplayAbility* AbilityInstance : AbilityInstances)
+						{
+							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed,
+								AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+							return;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+				{
+					AbilitySpecInputPressed(AbilitySpec);
+					if (!AbilitySpec.IsActive())
+					{
+						TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
+						for (UGameplayAbility* AbilityInstance : AbilityInstances)
+						{
+							InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
+							return;
+						}
+					}
 				}
 			}
 		}

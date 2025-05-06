@@ -92,10 +92,9 @@ struct FAuraGameplayTags
 
 #pragma region Abilities Tags
 	FGameplayTag Abilities_None;
-	
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
-	
+	FGameplayTag Abilities_WaitingExecution;
 	FGameplayTag Abilities_HitReact;	
 #pragma endregion
 	
