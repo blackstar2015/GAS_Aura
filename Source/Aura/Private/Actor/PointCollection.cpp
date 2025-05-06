@@ -63,11 +63,11 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 
 	for (USceneComponent* Pt : ImmutablePoints)
 	{
-		if (ArrayCopy.Num() > NumPoints) return ArrayCopy;
+		if (ArrayCopy.Num() >= NumPoints) return ArrayCopy;
 
 		if (Pt != Pt_0)
 		{
-			FVector ToPoint = Pt->GetComponentLocation() = Pt_0->GetComponentLocation();
+			FVector ToPoint = Pt->GetComponentLocation() - Pt_0->GetComponentLocation();
 			ToPoint = ToPoint.RotateAngleAxis(YawOverride,FVector::UpVector);
 			Pt->SetWorldLocation(Pt_0->GetComponentLocation() + ToPoint);
 		}
