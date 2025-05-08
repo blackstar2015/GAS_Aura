@@ -17,7 +17,6 @@ class UAttributeSet;
 class UGameplayEffect;
 class UGameplayAbility;
 class UAnimMontage;
-
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -26,11 +25,17 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 public:
 	AAuraCharacterBase();
 	virtual void Tick(float DeltaTime) override;
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
+	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator, AActor* DamageCauser) override;
+	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	//Combat Interface
+#pragma region Combat Interface
 	virtual void Die(const FVector& DeathImpulse) override;
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
@@ -47,9 +52,14 @@ public:
     virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	virtual bool IsBeingShocked_Implementation() const override;
+	virtual bool IsCastingArcaneShards_Implementation() const override;
+	virtual void SetIsCastingArcaneShards_Implementation(bool bInCastingArcaneShards) override;
+	virtual FOnDamageSignature& GetOnDamageDelegate() override;
+#pragma endregion
 	
 	FOnASCRegistered OnASCRegistered;
 	FOnDeathSignature OnDeathDelegate;
+	FOnDamageSignature OnDamageDelegate;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat|Montages")
 	TArray<FTaggedMontage> AttackMontages;
@@ -65,6 +75,9 @@ public:
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool bIsBeingShocked = false;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsCastingArcaneShards = false;
 	
 	UFUNCTION()
 	virtual void OnRep_Stunned();

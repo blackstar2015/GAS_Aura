@@ -25,6 +25,7 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+#pragma region Widget Controller
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AAuraHUD*& OutAuraHUD);
 	
@@ -35,8 +36,10 @@ public:
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
-	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);	
+#pragma endregion
 
+#pragma region Ability System Class Defaults
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(ECharacterClass CharacterClass, float Level, const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
 
@@ -47,8 +50,10 @@ public:
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|CharacterClassDefaults")
-	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
-	
+	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);	
+#pragma endregion
+
+#pragma region Effect Context Getters
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
 	
@@ -75,7 +80,21 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static FVector GetKnockBackForce(const FGameplayEffectContextHandle& EffectContextHandle);
-	
+
+	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static bool IsRadialDamage(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static float GetRadialDamageInnerRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static float GetRadialDamageOuterRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static FVector GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle);	
+#pragma endregion
+
+#pragma region Effect Context Setters
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
 
@@ -103,6 +122,20 @@ public:
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetKnockBack(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,const FVector& InKnockBack);
 	
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetIsRadialDamage(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,bool bInIsRadialDamage);
+	
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetRadialDamageInnerRadius(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,float InRadialDamageInnerRadius);
+	
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetRadialDamageOuterRadius(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,float InRadialDamageOuterRadius);
+	
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|GameplayEffects")
+	static void SetRadialDamageOrigin(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,const FVector& InRadialDamageOrigin);
+#pragma endregion
+
+#pragma region Gameplay Mechanics
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 	
@@ -126,5 +159,6 @@ public:
 	static  float CalculateLaunchAngleDegrees(float Distance, float Speed, float Gravity = 980.f);
 	
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
+#pragma endregion
 };
 

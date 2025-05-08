@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemComponent.h"
 #include "UObject/Interface.h"
 #include "GameplayTagContainer.h"
 #include "NiagaraSystem.h"
@@ -11,6 +10,7 @@
 #include "CombatInterface.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageSignature, float /*Damage amount*/);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
 
 
@@ -38,8 +38,9 @@ class UCombatInterface : public UInterface
 {
 	GENERATED_BODY()
 };
-class UAnimMontage;
+class UAbilitySystemComponent;
 class UNiagaraSystem;
+class UAnimMontage;
 /**
  * 
  */
@@ -88,7 +89,8 @@ public:
 
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
-
+	virtual FOnDamageSignature& GetOnDamageDelegate() = 0;
+	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetInShockLoop(bool bInLoop);
 	
@@ -97,6 +99,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsBeingShocked(bool bInShock);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsCastingArcaneShards() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsCastingArcaneShards(bool bInCastingArcaneShards);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	USkeletalMeshComponent* GetWeapon();

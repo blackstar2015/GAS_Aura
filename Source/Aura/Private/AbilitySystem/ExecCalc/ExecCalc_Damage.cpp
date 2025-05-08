@@ -13,6 +13,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 struct AuraDamageStatics
 {
@@ -175,7 +176,36 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Resistance = FMath::Clamp(Resistance,0.f,100.f);
 
 		DamageTypeValue *= (100.f - Resistance)/100.f;
+
+		if (UAuraAbilitySystemLibrary::IsRadialDamage(EffectContextHandle))
+		{
+			//Bind Lambda to OnDamageDelegate on the victim here
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar);
+			if (CombatInterface)
+			{
+				CombatInterface->GetOnDamageDelegate().AddLambda([&](float DamageAmount)
+				{
+					// In Lambda, set DamageTypeValue to the damage received from the broadcast
+					DamageTypeValue = DamageAmount;
+				});
+			}
+			/*Call UGameplayStatics::ApplyDamageWithRadialFalloff to cause damage(this will result in TakeDamage being called
+			on the victim, which will then broadcast OnDamageDelegate)*/
+			UGameplayStatics::ApplyRadialDamageWithFalloff(TargetAvatar,
+				DamageTypeValue,
+				0.f,
+				UAuraAbilitySystemLibrary::GetRadialDamageOrigin(EffectContextHandle),
+				UAuraAbilitySystemLibrary::GetRadialDamageInnerRadius(EffectContextHandle),
+				UAuraAbilitySystemLibrary::GetRadialDamageOuterRadius(EffectContextHandle),
+				1.f,
+				UDamageType::StaticClass(),
+				TArray<AActor*>(),
+				SourceAvatar,
+				nullptr);
+		}
 		Damage += DamageTypeValue;
+
+		
 	}
 	float RandDamageMultiplier = FMath::RandRange(-1.0f, 1.0f);
 	Damage = Damage - RandDamageMultiplier; 

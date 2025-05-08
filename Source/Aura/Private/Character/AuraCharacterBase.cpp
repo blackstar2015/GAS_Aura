@@ -69,6 +69,14 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+float AAuraCharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	const float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	OnDamageDelegate.Broadcast(DamageTaken);
+	return DamageTaken;
+}
+
 UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;
@@ -166,6 +174,21 @@ void AAuraCharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
 bool AAuraCharacterBase::IsBeingShocked_Implementation() const
 {
 	return bIsBeingShocked;
+}
+
+bool AAuraCharacterBase::IsCastingArcaneShards_Implementation() const
+{
+	return bIsCastingArcaneShards;
+}
+
+void AAuraCharacterBase::SetIsCastingArcaneShards_Implementation(bool bInCastingArcaneShards)
+{
+	bIsCastingArcaneShards = bInCastingArcaneShards;
+}
+
+FOnDamageSignature& AAuraCharacterBase::GetOnDamageDelegate()
+{
+	return OnDamageDelegate;
 }
 
 
