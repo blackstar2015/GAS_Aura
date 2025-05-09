@@ -54,7 +54,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 		if (HasMatchingGameplayTag(TagContainer.Abilities_WaitingExecution))
 		{
 			//if ability is waiting for another input to activate the spell check for LMB
-			if (AbilitySpec.Ability->AbilityTags.HasTagExact(TagContainer.Abilities_WaitingExecution) && AbilitySpec.IsActive())
+			if (AbilitySpec.Ability->GetAssetTags().HasTagExact(TagContainer.Abilities_WaitingExecution) && AbilitySpec.IsActive())
 			{
 				if (InputTag.MatchesTagExact(TagContainer.InputTag_LMB))
 				{

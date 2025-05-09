@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "UObject/Interface.h"
 #include "GameplayTagContainer.h"
 #include "NiagaraSystem.h"

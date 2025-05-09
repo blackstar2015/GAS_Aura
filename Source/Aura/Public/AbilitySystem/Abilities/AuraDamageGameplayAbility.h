@@ -20,7 +20,7 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION(BlueprintPure)
-	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr, FVector InRadialDamageOrigin = FVector::ZeroVector) const;
 
 	UFUNCTION(BlueprintPure)
 	float GetDamageAtLevel() const;
@@ -65,9 +65,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Radial")
 	float RadialDamageOuterRadius = 0.f;
-	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Damage|Radial")
-	FVector RadialDamageOrigin = FVector::ZeroVector;
 	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
