@@ -7,11 +7,9 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
-#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
-#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -204,12 +202,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 				SourceAvatar,
 				nullptr);
 		}
-		Damage += DamageTypeValue;
-
-		
+		Damage += DamageTypeValue;		
 	}
-	float RandDamageMultiplier = FMath::RandRange(-1.0f, 1.0f);
-	Damage = Damage - RandDamageMultiplier; 
 # pragma endregion
 
 #pragma region BlockChance
