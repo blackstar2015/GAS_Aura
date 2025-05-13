@@ -55,7 +55,7 @@ FString UAuraFireBolt::GetNextLevelDescription(int32 Level)
 	const float Cooldown = GetCooldown(Level);
 	
 	return FString::Printf(TEXT(
-		"<Title> Fire Bolt</>"
+		"<Title> Next Level:</>"
 		"\n\n<Small>Next Level: </><Level>%d</>"
 		"\n<Small>Mana Cost: </><ManaCost>%.1f</>"
 		"\n<Small>Cooldown: </><Cooldown>%.1f</>"

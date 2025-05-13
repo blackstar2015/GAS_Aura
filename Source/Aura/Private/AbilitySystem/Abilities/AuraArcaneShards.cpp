@@ -51,7 +51,7 @@ FString UAuraArcaneShards::GetNextLevelDescription(int32 Level)
 	const int32 NumberOfShards = (Level-1)*2 + 1;
 
 	return FString::Printf(TEXT(
-		"<Title> Arcane Shards</>"
+		"<Title> Next Level:</>"
 		"\n\n<Small>Next Level: </><Level>%d</>"
 		"\n<Small>Mana Cost: </><ManaCost>%.1f</>"
 		"\n<Small>Cooldown: </><Cooldown>%.1f</>"

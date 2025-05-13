@@ -65,7 +65,7 @@ FString UAuraElectrocute::GetNextLevelDescription(int32 Level)
 	const float Cooldown = GetCooldown(Level);
 
 	return 	FString::Printf(TEXT(
-			"<Title> Electrocute</>"
+			"<Title> Next Level:</>"
 			"\n\n<Small>Current Level: </><Level>%d</>"
 			"\n<Small>Mana Cost: </><ManaCost>%.1f</>"
 			"\n<Small>Cooldown: </><Cooldown>%.1f</>"
