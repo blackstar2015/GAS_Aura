@@ -100,6 +100,7 @@ struct FAuraGameplayTags
 	
 #pragma region Fire Abilities Tags		
 	FGameplayTag Abilities_Fire_FireBolt;
+	FGameplayTag Abilities_Fire_FireBlast;
 #pragma endregion
 
 #pragma region Lightning Abilities Tags		
@@ -134,6 +135,7 @@ struct FAuraGameplayTags
 	
 #pragma region Cooldown Tags
 	FGameplayTag Cooldown_Fire_FireBolt;
+	FGameplayTag Cooldown_Fire_FireBlast;
 	FGameplayTag Cooldown_Lightning_Electrocute;
 	FGameplayTag Cooldown_Arcane_ArcaneShards;
 #pragma endregion

@@ -31,6 +31,8 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable)
 	void OnHit();
 	virtual void Destroyed() override;
 	
@@ -38,7 +40,7 @@ protected:
 	TObjectPtr<USphereComponent> Sphere;
 	
 	UFUNCTION()
-	void OnSphereOverlapped(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,
+	virtual void OnSphereOverlapped(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
