@@ -164,6 +164,10 @@ struct FAuraGameplayTags
     FGameplayTag Player_Block_InputHeld;
     FGameplayTag Player_Block_CursorTrace;
 #pragma endregion
+
+#pragma region Gameplay Cue Tags
+	FGameplayTag GameplayCue_FireBlast;
+#pragma endregion
 private:
 	static FAuraGameplayTags GameplayTags;
 };
