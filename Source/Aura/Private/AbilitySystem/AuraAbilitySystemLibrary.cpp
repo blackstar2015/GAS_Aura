@@ -133,6 +133,37 @@ int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* Worl
 	return static_cast<int32>(XPReward);
 }
 
+void UAuraAbilitySystemLibrary::SetIsRadialDamageEffectParam(FDamageEffectParams& DamageEffectParams,
+	bool bInIsRadialDamage, float InInnerRadius, float InOuterRadius, FVector InOrigin)
+{
+	DamageEffectParams.bIsRadialDamage = bInIsRadialDamage;
+	DamageEffectParams.RadialDamageInnerRadius = InInnerRadius;
+	DamageEffectParams.RadialDamageOuterRadius = InOuterRadius;
+	DamageEffectParams.RadialDamageOrigin = InOrigin;
+}
+
+void UAuraAbilitySystemLibrary::SetKnockbackDirection(FDamageEffectParams& DamageEffectParams,
+	FVector KnockbackDirection, float InKnockbackMagnitudeOverride)
+{
+	KnockbackDirection.Normalize();
+	if (InKnockbackMagnitudeOverride == 0.0f) DamageEffectParams.KnockBackForce = KnockbackDirection * DamageEffectParams.KnockBackForceMagnitude;
+	else DamageEffectParams.KnockBackForce = KnockbackDirection * InKnockbackMagnitudeOverride;	
+}
+
+void UAuraAbilitySystemLibrary::SetDeathImpulseDirection(FDamageEffectParams& DamageEffectParams,
+	FVector ImpulseDirection, float InDeathImpulseMagnitudeOverride)
+{
+	ImpulseDirection.Normalize();
+	if (InDeathImpulseMagnitudeOverride == 0.0f) DamageEffectParams.DeathImpulse = ImpulseDirection * DamageEffectParams.DeathImpulseMagnitude;
+	else DamageEffectParams.DeathImpulse = ImpulseDirection * InDeathImpulseMagnitudeOverride;
+}
+
+void UAuraAbilitySystemLibrary::SetTargetEffectParamsASC(FDamageEffectParams& DamageEffectParams,
+	UAbilitySystemComponent* InASC)
+{
+	DamageEffectParams.TargetAbilitySystemComponent = InASC;
+}
+
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));

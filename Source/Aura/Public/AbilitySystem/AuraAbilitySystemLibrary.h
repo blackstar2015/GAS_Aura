@@ -160,5 +160,19 @@ public:
 	
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
 #pragma endregion
+
+#pragma region DamageEffectParams
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|DamageEffects")
+	static void SetIsRadialDamageEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, bool bInIsRadialDamage, float InInnerRadius, float InOuterRadius, FVector InOrigin);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|DamageEffects")
+	static void SetKnockbackDirection(UPARAM(ref) FDamageEffectParams& DamageEffectParams,FVector KnockbackDirection, float InKnockbackMagnitudeOverride = 0.f);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|DamageEffects")
+	static void SetDeathImpulseDirection(UPARAM(ref) FDamageEffectParams& DamageEffectParams,FVector ImpulseDirection, float InDeathImpulseMagnitudeOverride = 0.f);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySystemLibrary|DamageEffects")
+	static void SetTargetEffectParamsASC(UPARAM(ref) FDamageEffectParams& DamageEffectParams, UAbilitySystemComponent* InASC);
+#pragma endregion
 };
 
