@@ -9,6 +9,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayAbilitySpec.h"
 #include "GameplayEffectTypes.h"
+#include "Engine/OverlapResult.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"

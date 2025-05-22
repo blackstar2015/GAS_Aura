@@ -5,8 +5,6 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "ToolWidgetsSlateTypes.h"
-#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 
 UDebuffNiagaraComponent::UDebuffNiagaraComponent()

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FindInBlueprintManager.h"
 #include "GameplayTagContainer.h"
 
 /**
