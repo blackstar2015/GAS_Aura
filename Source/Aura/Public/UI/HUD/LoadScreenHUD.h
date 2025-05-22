@@ -6,6 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "LoadScreenHUD.generated.h"
 
+class UMVVM_LoadScreen;
+class ULoadScreenWidget;
 /**
  * 
  */
@@ -18,11 +20,17 @@ public:
 	TSubclassOf<UUserWidget> LoadScreenWidgetClass;
 
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UUserWidget> LoadScreenWidget;
+	TObjectPtr<ULoadScreenWidget> LoadScreenWidget;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> LoadScreenBlueprint;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UMVVM_LoadScreen> LoadScreenViewModeClass;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UMVVM_LoadScreen> LoadScreenViewModel;
 protected:
 	virtual void BeginPlay() override;
 
