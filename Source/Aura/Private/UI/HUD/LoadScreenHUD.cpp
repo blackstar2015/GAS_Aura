@@ -4,6 +4,7 @@
 #include "UI/HUD/LoadScreenHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Components/WidgetComponent.h"
 #include "UI/ViewModel/MVVM_LoadScreen.h"
 #include "UI/Widget/LoadScreenWidget.h"
 
@@ -22,10 +23,17 @@ void ALoadScreenHUD::BeginPlay()
  * LoadScreenWidget->AddToViewport();
  */
 	
-	/**Spawn Loadscreen in WORLD space */
+	//Spawn Loadscreen in WORLD space 
 	AActor* LoadScreenBP = GetWorld()->SpawnActor(LoadScreenBlueprint);
 	LoadScreenBP->SetActorLocation(LoadScreenSpawnPosition);
-
-	LoadScreenWidget = LoadScreenBP->GetComponentByClass<ULoadScreenWidget>();
-	LoadScreenWidget->BlueprintInitializeWidget();
+	//Find the Loadscreen widget in the LoadscreenBP's components
+	if (UWidgetComponent* LoadScreenWidgetComponent = LoadScreenBP->FindComponentByClass<UWidgetComponent>())
+	{
+		UUserWidget* LoadScreenWidgetObjectUserWidget = LoadScreenWidgetComponent->GetUserWidgetObject();
+		LoadScreenWidget = Cast<ULoadScreenWidget>(LoadScreenWidgetObjectUserWidget);
+		if (LoadScreenWidget)
+		{
+			LoadScreenWidget->BlueprintInitializeWidget();			
+		}
+	}
 }
