@@ -12,21 +12,22 @@ void ALoadScreenHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Creating the loadscreen view model before creating the load screen
+	//Creating the load screen view model before creating the load screen
 	LoadScreenViewModel = NewObject<UMVVM_LoadScreen>(this, LoadScreenViewModeClass);
 	//Assign View Model Class to Load Slots
 	LoadScreenViewModel->InitializeLoadSlots();
 
 /**
- * Spawn Loadscreen in SCREEN space
+ * (Deprecated)Spawn Loadscreen in SCREEN space
  * LoadScreenWidget =CreateWidget<ULoadScreenWidget>(GetWorld(), LoadScreenWidgetClass);
  * LoadScreenWidget->AddToViewport();
  */
 	
-	//Spawn Loadscreen in WORLD space 
+	//Spawn Load screen in WORLD space 
 	AActor* LoadScreenBP = GetWorld()->SpawnActor(LoadScreenBlueprint);
 	LoadScreenBP->SetActorLocation(LoadScreenSpawnPosition);
-	//Find the Loadscreen widget in the LoadscreenBP's components
+	
+	//Find the Load screen widget in the LoadScreenBP's components
 	if (UWidgetComponent* LoadScreenWidgetComponent = LoadScreenBP->FindComponentByClass<UWidgetComponent>())
 	{
 		UUserWidget* LoadScreenWidgetObjectUserWidget = LoadScreenWidgetComponent->GetUserWidgetObject();
@@ -36,5 +37,5 @@ void ALoadScreenHUD::BeginPlay()
 			LoadScreenWidget->BlueprintInitializeWidget();			
 		}
 	}
-	//LoadScreenViewModel->LoadData();
+	LoadScreenViewModel->LoadData();
 }

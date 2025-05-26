@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
-#include "WorldPartition/Cook/WorldPartitionCookPackage.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "MVVM_LoadSlot.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetWidgetSwitcherIndex, int32, WidgetSwitcherIndex);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnableSelectSlotButton, bool, EnableSelectSlotButton);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnableSelectSlotButton, bool, bEnable);
 
 /**
  * 
@@ -22,16 +22,16 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
 
-	// UPROPERTY(BlueprintAssignable)
-	// FEnableSelectSlotButton EnableSelectSlotButton;
+	UPROPERTY(BlueprintAssignable)
+	FEnableSelectSlotButton EnableSelectSlotButton;
 
 	void InitializeSlot();
 	
 	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SlotStatus;
+	
+	UPROPERTY()
 	int32 SlotIndex;
-
-	// UPROPERTY()
-	// TEnumAsByte<ESaveSlotStatus> SlotStatus;
 
 	UPROPERTY()
 	FName PlayerStartTag;
