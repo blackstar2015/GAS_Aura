@@ -7,6 +7,7 @@
 #include "MVVM_LoadScreen.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSlotSelected);
+
 class UMVVM_LoadSlot;
 /**
  * 
@@ -38,6 +39,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectSlotButtonPressed(int32 Slot);
 
+	FString GetLoadScreenName() const {return LoadScreenName;}
+
+	void SetLoadScreenName(FString InLoadScreenName);
+
 	void LoadData();
 private:
 	UPROPERTY()
@@ -48,5 +53,8 @@ private:
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_1;
 	UPROPERTY()
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	FString LoadScreenName;
 
 };

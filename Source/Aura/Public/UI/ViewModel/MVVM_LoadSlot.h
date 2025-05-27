@@ -24,7 +24,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FEnableSelectSlotButton EnableSelectSlotButton;
-
+	
 	void InitializeSlot();
 	
 	UPROPERTY()
