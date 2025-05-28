@@ -39,11 +39,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectSlotButtonPressed(int32 Slot);
 
-	FString GetLoadScreenName() const {return LoadScreenName;}
+	UFUNCTION(BlueprintCallable)
+	void DeleteButtonPressed(); 
 
-	void SetLoadScreenName(FString InLoadScreenName);
-
+	UFUNCTION(BlueprintCallable)
+	void PlayButtonPressed();
+	
 	void LoadData();
+	
+	int32 GetNumLoadSlots() const {return NumLoadSlots;}
+	void SetNumLoadSlots(int32 InNumLoadSlots);
 private:
 	UPROPERTY()
 	TMap<int32, UMVVM_LoadSlot*> LoadSlots;
@@ -53,8 +58,10 @@ private:
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_1;
 	UPROPERTY()
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
-
+	UPROPERTY()
+	UMVVM_LoadSlot* SelectedSlot;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
-	FString LoadScreenName;
+	int32 NumLoadSlots;
 
 };
