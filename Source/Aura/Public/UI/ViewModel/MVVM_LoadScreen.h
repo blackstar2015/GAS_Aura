@@ -49,6 +49,9 @@ public:
 	
 	int32 GetNumLoadSlots() const {return NumLoadSlots;}
 	void SetNumLoadSlots(int32 InNumLoadSlots);
+
+	int32 GetSlotIndexNum() const {return SlotIndexNum;}
+	void SetSlotIndexNum(int32 InSlotIndexNum);
 private:
 	UPROPERTY()
 	TMap<int32, UMVVM_LoadSlot*> LoadSlots;
@@ -63,5 +66,6 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	int32 NumLoadSlots;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	int32 SlotIndexNum;
 };

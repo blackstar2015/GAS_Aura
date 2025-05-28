@@ -11,16 +11,16 @@ void UMVVM_LoadScreen::InitializeLoadSlots()
 {
 	LoadSlot_0 = NewObject<UMVVM_LoadSlot>(this,LoadSlotViewModelClass);
 	LoadSlot_0->SetLoadSlotName(FString("LoadSlot_0"));
-	LoadSlots.Add(0,LoadSlot_0);
 	LoadSlot_0->SlotIndex = 0;
+	LoadSlots.Add(0,LoadSlot_0);
 	LoadSlot_1 = NewObject<UMVVM_LoadSlot>(this,LoadSlotViewModelClass);
-	LoadSlots.Add(1,LoadSlot_1);
 	LoadSlot_1->SlotIndex = 1;
 	LoadSlot_1->SetLoadSlotName(FString("LoadSlot_1"));
+	LoadSlots.Add(1,LoadSlot_1);
 	LoadSlot_2 = NewObject<UMVVM_LoadSlot>(this,LoadSlotViewModelClass);
-	LoadSlots.Add(2,LoadSlot_2);
 	LoadSlot_2->SetLoadSlotName(FString("LoadSlot_2"));
 	LoadSlot_2->SlotIndex = 2;
+	LoadSlots.Add(2,LoadSlot_2);
 
 	SetNumLoadSlots(LoadSlots.Num());
 }
@@ -89,11 +89,11 @@ void UMVVM_LoadScreen::LoadData()
 
 	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
-		ULoadScreenSaveGame* SaveObject = AuraGameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
+		const ULoadScreenSaveGame* SaveObject = AuraGameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
 
 		const FString PlayerName = SaveObject->PlayerName;
 
-		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
+		const TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
 
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;	
 		LoadSlot.Value->SetPlayerName(PlayerName);
@@ -104,4 +104,9 @@ void UMVVM_LoadScreen::LoadData()
 void UMVVM_LoadScreen::SetNumLoadSlots(int32 InNumLoadSlots)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(NumLoadSlots, InNumLoadSlots);
+}
+
+void UMVVM_LoadScreen::SetSlotIndexNum(int32 InSlotIndexNum)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(SlotIndexNum, InSlotIndexNum);
 }
