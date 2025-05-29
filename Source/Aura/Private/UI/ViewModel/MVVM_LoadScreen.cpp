@@ -3,6 +3,7 @@
 
 #include "UI/ViewModel/MVVM_LoadScreen.h"
 
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "Game/AuraGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
@@ -80,7 +81,11 @@ void UMVVM_LoadScreen::DeleteButtonPressed()
 
 void UMVVM_LoadScreen::PlayButtonPressed()
 {
-	
+	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(SelectedSlot))
+	{
+		AuraGameMode->TravelToMap(SelectedSlot);
+	}
 }
 
 void UMVVM_LoadScreen::LoadData()
