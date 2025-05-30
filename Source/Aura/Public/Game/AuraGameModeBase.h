@@ -36,6 +36,9 @@ public:
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
 
 	UPROPERTY(EditDefaultsOnly)
+	FName DefaultPlayerStartTag = FName("PlayerStart");
+
+	UPROPERTY(EditDefaultsOnly)
 	FString DefaultMapName;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -43,6 +46,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 protected:
 	virtual void BeginPlay() override;
