@@ -23,9 +23,6 @@ class AURA_API ULoadScreenSaveGame : public USaveGame
 public:    
     UPROPERTY()
     int32 SlotIndex = 0;
-
-	UPROPERTY()
-	int PlayerLevel;
 	
     UPROPERTY()
     FString SlotName = FString();
@@ -44,4 +41,30 @@ public:
 
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
+
+	//Player Properties
+	UPROPERTY()
+	int32 PlayerLevel = 0;
+
+	UPROPERTY()
+	int32 Xp = 0;
+
+	UPROPERTY()
+	int32 SpellPoints = 0;
+
+	UPROPERTY()
+	int32 AttributePoints = 0;
+
+	//Primary Attributes
+	UPROPERTY()
+	float Strength = 0;
+
+	UPROPERTY()
+	float Intelligence = 0;
+	
+	UPROPERTY()
+	float Resilience = 0;
+
+	UPROPERTY()
+	float Vigour = 0;
 };
