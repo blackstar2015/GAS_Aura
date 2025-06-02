@@ -34,7 +34,4 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
-
-	UPROPERTY(VisibleAnywhere)
-	bool bCheckpointReached = false;
 };
