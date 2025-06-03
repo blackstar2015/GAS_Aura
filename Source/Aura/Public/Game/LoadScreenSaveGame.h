@@ -40,6 +40,11 @@ struct FSavedAbility
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int32 AbilityLevel;
 };
+
+inline bool operator==(const FSavedAbility& lhs, const FSavedAbility& rhs)
+{
+	return lhs.AbilityTag.MatchesTagExact(rhs.AbilityTag);
+}
 /**
  * 
  */
