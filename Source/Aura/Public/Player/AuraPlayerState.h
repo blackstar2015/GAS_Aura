@@ -29,9 +29,9 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	FOnPlayerStatChanged OnXPChangedDelegate;
-	FOnPlayerStatChanged OnLevelChangedDelegate;
 	FOnPlayerStatChanged OnAttributePointChangedDelegate;
 	FOnPlayerStatChanged OnSpellPointChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
 	FORCEINLINE int32 GetXP() const { return XP; }
