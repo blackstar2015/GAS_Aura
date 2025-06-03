@@ -23,12 +23,13 @@ class AURA_API AAuraGameModeBase : public AGameModeBase
 public:
 	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
-	void SaveWorldState();
 	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 
 	ULoadScreenSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
+	
+	void SaveWorldState(UWorld* World);
 	
 	UPROPERTY(EditDefaultsOnly, Category="Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
