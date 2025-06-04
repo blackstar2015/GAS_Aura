@@ -35,7 +35,6 @@ public:
 #pragma endregion
 	
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-	void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 	UPROPERTY(BlueprintAssignable)
@@ -54,6 +53,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat|Character Class Defaults")
 	int32 Level = 1;
 	

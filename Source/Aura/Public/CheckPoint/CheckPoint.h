@@ -18,6 +18,11 @@ class AURA_API ACheckPoint : public APlayerStart, public ISaveInterface
 public:
 	ACheckPoint(const FObjectInitializer& ObjectInitializer);
 
+#pragma region Save Interface
+	virtual bool ShouldLoadTransform_Implementation() override {return false;}
+	virtual void LoadActor_Implementation() override;
+#pragma endregion
+	
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool bReached = false;
 protected:

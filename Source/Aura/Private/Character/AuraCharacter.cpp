@@ -52,6 +52,11 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	InitAbilityActorInfo();
 	LoadProgress();
+	if(AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		AuraGameMode->LoadWorldState(GetWorld());
+	}
+	
 }
 
 void AAuraCharacter::LoadProgress()
