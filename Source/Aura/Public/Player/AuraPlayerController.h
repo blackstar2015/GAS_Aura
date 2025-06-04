@@ -17,6 +17,13 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UAuraAbilitySystemComponent;
+
+enum class ETargetingStatus  : uint8
+{
+	TargetingEnemy,
+	TargetingNonEnemy,
+	NotTargeting
+};
 /**
  * 
  */
@@ -67,7 +74,7 @@ private:
 	float ShortPressThreshold = 0.5f;
 	bool bShiftKeyDown = false;
 	bool bAutoRunning = false;
-	bool bTargeting = false;
+	ETargetingStatus TargetingStatus = ETargetingStatus::NotTargeting;
 	bool bShowMagicCircle = false;
 	void ShiftPressed() {bShiftKeyDown = true;}
 	void ShiftReleased() {bShiftKeyDown = false;}	
@@ -81,9 +88,10 @@ private:
 	UAuraAbilitySystemComponent* GetASC();
 	
 	FHitResult CursorHit;
-	
-	TScriptInterface<IHighlightInterface> LastActor;
-	TScriptInterface<IHighlightInterface> ThisActor;
+	static void HighlightActor(AActor* InActor);
+	static void UnHighlightActor(AActor* InActor);
+	TObjectPtr<AActor> LastActor;
+	TObjectPtr<AActor> ThisActor;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMagicCircle> MagicCircleClass;
