@@ -52,8 +52,6 @@ public:
     virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	virtual bool IsBeingShocked_Implementation() const override;
-	virtual bool IsCastingArcaneShards_Implementation() const override;
-	virtual void SetIsCastingArcaneShards_Implementation(bool bInCastingArcaneShards) override;
 	virtual FOnDamageSignature& GetOnDamageDelegate() override;
 #pragma endregion
 	
@@ -73,17 +71,17 @@ public:
 	UPROPERTY(ReplicatedUsing=OnRep_Burned, BlueprintReadOnly)
 	bool bIsBurned = false;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(ReplicatedUsing=OnRep_BeingShocked, BlueprintReadOnly)
 	bool bIsBeingShocked = false;
-
-	UPROPERTY(Replicated, BlueprintReadOnly)
-	bool bIsCastingArcaneShards = false;
 	
 	UFUNCTION()
 	virtual void OnRep_Stunned();
 
 	UFUNCTION()
 	virtual void OnRep_Burned();
+
+	UFUNCTION()
+	virtual void OnRep_BeingShocked();
 	
 protected:
 	virtual void BeginPlay() override;

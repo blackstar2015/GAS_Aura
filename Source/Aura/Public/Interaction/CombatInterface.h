@@ -100,12 +100,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsBeingShocked(bool bInShock);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool IsCastingArcaneShards() const;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SetIsCastingArcaneShards(bool bInCastingArcaneShards);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	USkeletalMeshComponent* GetWeapon();

@@ -176,16 +176,6 @@ bool AAuraCharacterBase::IsBeingShocked_Implementation() const
 	return bIsBeingShocked;
 }
 
-bool AAuraCharacterBase::IsCastingArcaneShards_Implementation() const
-{
-	return bIsCastingArcaneShards;
-}
-
-void AAuraCharacterBase::SetIsCastingArcaneShards_Implementation(bool bInCastingArcaneShards)
-{
-	bIsCastingArcaneShards = bInCastingArcaneShards;
-}
-
 FOnDamageSignature& AAuraCharacterBase::GetOnDamageDelegate()
 {
 	return OnDamageDelegate;
@@ -295,6 +285,11 @@ void AAuraCharacterBase::OnRep_Stunned()
 }
 
 void AAuraCharacterBase::OnRep_Burned()
+{
+	
+}
+
+void AAuraCharacterBase::OnRep_BeingShocked()
 {
 	
 }
