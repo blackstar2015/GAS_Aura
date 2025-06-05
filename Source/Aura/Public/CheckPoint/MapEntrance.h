@@ -15,6 +15,8 @@ class AURA_API AMapEntrance : public ACheckPoint
 	GENERATED_BODY()
 	
 public:
+	AMapEntrance(const FObjectInitializer& ObjectInitializer);
+	
 	UPROPERTY(EditAnywhere)
 	TSoftObjectPtr<UWorld> DestinationMap;
 
