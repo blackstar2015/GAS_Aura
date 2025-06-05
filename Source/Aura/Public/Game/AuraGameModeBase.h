@@ -21,17 +21,6 @@ class AURA_API AAuraGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
-	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
-	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
-	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
-
-	ULoadScreenSaveGame* RetrieveInGameSaveData();
-	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
-	
-	void SaveWorldState(UWorld* World) const;
-	void LoadWorldState(UWorld* World) const;
-	
 	UPROPERTY(EditDefaultsOnly, Category="Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 
@@ -52,7 +41,16 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
-
+	
+	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
+	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
+	void SaveWorldState(UWorld* World, const FString& DestinationMapAssetName = FString("")) const;
+	void LoadWorldState(UWorld* World) const;
+	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
+	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
+	ULoadScreenSaveGame* RetrieveInGameSaveData();	
+	FString GetMapNameFromMapAssetName(const FString& MapAssetName) const;
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 protected:
