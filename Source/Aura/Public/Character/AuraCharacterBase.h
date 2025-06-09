@@ -82,63 +82,22 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_BeingShocked();
+
+	void SetCharacterClass(ECharacterClass InCharacterClass) {CharacterClass = InCharacterClass;}
 	
 protected:
+	bool bDead = false;
+	
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual void InitializeDefaultAttributes() const;
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass,float Level) const;
-	void AddCharacterAbilities();
-	
+	void AddCharacterAbilities();	
 	void Dissolve();
 	void DissolveWeapon();
 	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat|Weapon Sockets")
-	TObjectPtr<USkeletalMeshComponent> Weapon;
-
-	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
-	FName WeaponTipSocketName;
-	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
-	FName LeftHandSocketName;
-	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
-	FName RightHandSocketName;
-	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
-	FName TailSocketName;
-	
-	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
-	
-	UPROPERTY()
-	TObjectPtr<UAttributeSet> AttributeSet;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat|Character Class Defaults")
-	ECharacterClass CharacterClass = ECharacterClass::Warrior;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
-	TSubclassOf<UGameplayEffect>  DefaultPrimaryAttributes;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
-	TSubclassOf<UGameplayEffect>  DefaultSecondaryAttributes;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
-	TSubclassOf<UGameplayEffect>  DefaultVitalAttributes;
-	
-	bool bDead = false;
-	//Dissolve Effects
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TObjectPtr<UMaterialInterface> DissolveMaterialInstance;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TObjectPtr<UMaterialInterface> WeaponDissolveMaterialInstance;
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicInstance);
-	UFUNCTION(BlueprintImplementableEvent)
-	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicInstance);
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat|Effects")
-	UNiagaraSystem* BloodEffect;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat|Effects")
-	USoundBase* DeathSound;
-
 	//Minions
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat|Summons")
 	int32 MinionCount = 0;
@@ -146,24 +105,84 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat|Properties")
 	float BaseWalkSpeed = 600.f;
 	
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat|Weapon Sockets")
+	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
+	FName WeaponTipSocketName;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
+	FName LeftHandSocketName;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
+	FName RightHandSocketName;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat|Weapon Sockets")
+	FName TailSocketName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat|Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
+	TSubclassOf<UGameplayEffect>  DefaultPrimaryAttributes;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
+	TSubclassOf<UGameplayEffect>  DefaultSecondaryAttributes;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat|Attributes")
+	TSubclassOf<UGameplayEffect>  DefaultVitalAttributes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat|Effects")
+	UNiagaraSystem* BloodEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat|Effects")
+	USoundBase* DeathSound;
+	
+
+	//Dissolve Effects
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInterface> DissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInterface> WeaponDissolveMaterialInstance;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicInstance);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicInstance);
+	
 private:
 	UPROPERTY(EditAnywhere, Category = "Combat|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	
 	UPROPERTY(EditAnywhere, Category = "Combat|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
+	
 	UPROPERTY(EditAnywhere, Category = "Combat|Montages")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPassiveNiagaraComponent> HaloOfProtectionNiagaraComponent;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPassiveNiagaraComponent> LifeSiphonNiagaraComponent;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> EffectAttachComponent;
 };
