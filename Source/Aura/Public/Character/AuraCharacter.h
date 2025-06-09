@@ -26,6 +26,7 @@ public:
 	
 # pragma region CombatInterface
 	virtual int32 GetPlayerLevel_Implementation() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 #pragma endregion
 	
 # pragma region PlayerInterface
@@ -48,6 +49,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime = 5.f;
+
+	FTimerHandle DeathTimer;
 	void LoadProgress();
 private:
 	virtual void InitAbilityActorInfo() override;

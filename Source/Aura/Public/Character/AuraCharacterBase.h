@@ -86,8 +86,6 @@ public:
 	void SetCharacterClass(ECharacterClass InCharacterClass) {CharacterClass = InCharacterClass;}
 	
 protected:
-	bool bDead = false;
-	
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual void InitializeDefaultAttributes() const;
@@ -104,7 +102,10 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat|Properties")
 	float BaseWalkSpeed = 600.f;
-	
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bDead = false;
+
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
