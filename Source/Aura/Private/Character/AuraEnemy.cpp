@@ -81,6 +81,7 @@ void AAuraEnemy::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(Lifespan);
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"),true);
+	SpawnLoot();
 	Super::Die(DeathImpulse);	
 }
 
