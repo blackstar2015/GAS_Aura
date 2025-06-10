@@ -8,15 +8,15 @@ TArray<FLootItem> ULootTiers::GetLootItems()
 {
 	TArray<FLootItem> ReturnItems;
 
-	for (FLootItem& LootItem : LootItems)
+	for (FLootItem& Item : LootItems)
 	{
-		for (int32 i = 0; i < LootItem.MaxNumberToSpawn; ++i)
+		for (int32 i = 0; i < Item.MaxNumberToSpawn; ++i)
 		{
-			if (FMath::RandRange(1.f, 100.f) < LootItem.ChanceToSpawn)
+			if (FMath::RandRange(1.f, 100.f) < Item.ChanceToSpawn)
 			{
 				FLootItem NewItem;
-				NewItem.LootClass = LootItem.LootClass;
-				NewItem.bLootLevelOverride = LootItem.bLootLevelOverride;
+				NewItem.LootClass = Item.LootClass;
+				NewItem.bLootLevelOverride = Item.bLootLevelOverride;
 				ReturnItems.Add(NewItem);
 			}
 		}
