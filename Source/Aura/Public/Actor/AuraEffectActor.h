@@ -49,9 +49,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StartRotation();
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	FVector CalculatedLocation;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	FRotator CalculatedRotation;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
