@@ -32,18 +32,40 @@ class AURA_API AAuraEffectActor : public AActor
 	
 public:	
 	AAuraEffectActor();
-
+	virtual void Tick(float DeltaTime) override;
 	
 protected:
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 	
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);	
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(AActor* TargetActor);
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
+	UFUNCTION(BlueprintCallable)
+	void StartSinusoidalMovement();
+	UFUNCTION(BlueprintCallable)
+	void StartRotation();
+	
+	UPROPERTY(BlueprintReadOnly)
+	FVector CalculatedLocation;
+	UPROPERTY(BlueprintReadOnly)
+	FRotator CalculatedRotation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	bool bRotates = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	bool bSinusoidalMovement = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	float RotationRate = 45.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	float SineAmplitude = 	1.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	float SinePeriodConstant = 1.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickupMovement")
+	FVector InitialLocation;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	bool bDestroyOnEffectApplication = false;
@@ -71,5 +93,8 @@ protected:
 
 	TMap<FActiveGameplayEffectHandle,UAbilitySystemComponent*> ActiveEffectHandles;
 
+private:
+	float RunningTime = 1.f;
+	void ItemMovement(float DeltaTime);
 	
 };
